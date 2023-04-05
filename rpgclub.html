@@ -1,0 +1,52 @@
+---
+layout: default
+title: RPG Club
+description: A book club for RPGs where members vote on a game to play each month and share media contributions.
+icon: rpgclub
+---
+
+<p>
+  RPG Club is an engaging and social activity that can be best described as a book club for role-playing games
+  (RPGs). At the start of the last week of each month, our group selects three or four potential games to play. By
+  Wednesday of that week, we vote on which game to play for the following month.
+</p>
+
+<p>
+  During the month-long activity, all participants are highly encouraged to play and discuss the selected game while
+  also sharing and contributing their favorite media related to the game. Our community is open to all types of
+  contributions, including fan art, videos, pictures, and even romhacks.
+</p>
+
+<p>
+  We also offer exciting group activities such as watch parties for related media, like watching the Final Fantasy XV
+  movie or the anime prequel. Another way to contribute is through game streaming, which can be an incredibly fun way to
+  share your experiences and strategies with other members of the community.
+</p>
+
+<p>
+  Although none of these contributions are mandatory, we believe that they are excellent ways to make the most of the
+  activity and enhance the experience. Join us and discover a welcoming community of RPG enthusiasts who love to read,
+  play, and share their passion for this genre!
+</p>
+
+<h3 class="fw-light">Chronicle</h3>
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for card in site.data.rpgclub %}
+    <div class="col">
+      <div class="card rounded-5 shadow-sm">
+        <img src="assets/covers/{{ card.name | slugify }}.jpg" class="card-img-top rounded-top-5" alt="{{ card.name }}" loading="lazy">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.name }}</h5>
+          <h6 class="fw-light">Selected</h6>
+          <p class="card-text">{{ card.date.select | date: "%B, %Y" }}</p>
+          <h6 class="fw-light">Released</h6>
+          <p class="card-text">{{ card.date.release | date: "%B %d, %Y" }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+

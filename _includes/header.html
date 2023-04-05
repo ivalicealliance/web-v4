@@ -1,0 +1,17 @@
+<header>
+{% unless page.hidden_title %}
+    <h1 class="text-center fw-bolder display-5 m-0 py-sm-5 py-4">
+        <span class="header-gradient">
+            {% if page.icon %}
+                {% assign icon = site.data.navigation[page.icon].icon %}
+            {% elsif page.custom_icon %}  
+                {% assign icon = page.custom_icon %}
+            {% endif %}
+            {% if icon %}
+                <i class="{{ icon }}"></i>
+            {% endif %}
+            {{ page.title }}
+        </span>
+    </h1>
+{% endunless %}
+</header>

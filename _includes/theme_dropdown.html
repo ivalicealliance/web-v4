@@ -1,0 +1,26 @@
+<ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span id="theme-icon-active"></span>
+            <span class="d-md-none ms-1">Change theme</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="--bs-dropdown-min-width: 8rem;">
+            {% for element in site.data.themes %}
+            <li>
+                {% assign theme_value = element.text | downcase %}
+                <button type="button" class="dropdown-item d-flex align-items-center"
+                    data-bs-theme-value="{{ theme_value }}">
+                    <span class="me-2 opacity-50" id="theme-icon-{{ theme_value }}">
+                        <i class="{{ element.icon }} fa-fw"></i>
+                    </span>
+                    {{ element.text }}
+                    <span class="theme-selected-indicator selected ms-auto d-none"
+                        id="theme-selected-{{ theme_value }}">
+                        <i class="fas fa-check fa-fw"></i>
+                    </span>
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

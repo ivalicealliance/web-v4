@@ -1,0 +1,121 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', sans-serif;
+}
+
+.container-narrow {
+    /* max-width: 720px; */
+    max-width: 960px;
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}
+
+[data-bs-theme='dark'] .logo-theme {
+    filter: brightness(1.4)
+            contrast(0.7)
+            saturate(0.7);
+}
+
+@mixin gradient-text($startColor, $endColor) {
+    background: linear-gradient(to bottom right, $startColor, $endColor);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.header-gradient {
+    /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 700,  Pink 50: 700 */
+    @include gradient-text(#1975D2, #C2185C)
+}
+
+[data-bs-theme='dark'] .header-gradient {    
+    /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 300,  Pink 50: 300 */
+    @include gradient-text(#64B4F6, #F06294)
+}
+
+// Status
+
+.online {
+    color: var(--bs-success);
+}
+
+.idle {
+    color: var(--bs-warning);
+}
+
+.dnd {
+    color: var(--bs-danger);
+}
+
+.offline {
+    color: var(--bs-secondary);
+}
+
+// Styles for Member Sprite status
+.sprite {
+    animation-duration: 1.2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+
+    &-online {
+        @extend .sprite;
+        animation-name: glower-online;
+    }
+
+    &-idle {
+        @extend .sprite;
+        animation-name: glower-idle;
+    }
+
+    &-dnd {
+        @extend .sprite;
+        animation-name: glower-dnd;
+    }
+
+    &-offline {
+        filter: saturate(0.25) brightness(0.8);
+    }
+
+    @keyframes glower-online {
+
+        0%,
+        100% {
+            filter: saturate(1.25) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-success));
+        }
+
+        50% {
+            filter: saturate(1.5) brightness(1.3) drop-shadow(0 0 1rem var(--bs-success));
+        }
+    }
+
+    @keyframes glower-idle {
+
+        0%,
+        100% {
+            filter: saturate(1.0) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-warning));
+        }
+
+        50% {
+            filter: saturate(1.25) brightness(1.3) drop-shadow(0 0 0.75rem var(--bs-warning));
+        }
+    }
+
+    @keyframes glower-dnd {
+
+        0%,
+        100% {
+            filter: saturate(0.75) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-danger));
+        }
+
+        50% {
+            filter: saturate(1.0) brightness(1.3) drop-shadow(0 0 0.5rem var(--bs-danger));
+        }
+    }
+}

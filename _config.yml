@@ -1,0 +1,47 @@
+# Dependencies
+
+markdown: kramdown
+highlighter: rouge
+
+plugins: 
+  - jekyll-seo-tag  
+
+# File rules
+
+exclude:
+  - "README.md"
+  - "LICENSE"
+  - "Gemfile"
+  - "Gemfile.lock"  
+
+# Site
+
+title: Ivalice Alliance
+description: All things related to the Ivalice Alliance community.
+keyword: ivalice alliance, community, clan, gaming, final fantasy, xii, xiv
+url: https://www.ivalicealliance.net
+logo: /assets/images/logo.svg
+timezone: America/Los_Angeles
+year: 2008
+author: 
+  name: Balthier
+  twitter: balthier_ex
+
+# Data
+
+construct8: https://us-central1-river-octagon-219300.cloudfunctions.net/construct8
+discord: https://discord.gg/TEVk6n5
+twitter:
+  username: clan_ia
+social:
+  links:
+    - https://twitter.com/clan_ia
+github: ivalicealliance
+
+# Defaults
+
+defaults:
+  - scope:
+      path: "assets/images"
+    values:
+      image: true

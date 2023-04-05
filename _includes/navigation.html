@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg p-0">
+  <div class="container-xl p-4 border border-top-0 rounded-bottom-5 shadow-sm">
+    <a class="navbar-brand" href="{{ site.baseurl }}{% link index.html %}">
+      <h2 class="d-inline">{{ site.title }}</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#naviar_id"
+      aria-controls="naviar_id" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="naviar_id">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      {% for element_pair in site.data.navigation %}
+          {% assign element = element_pair[1] %}
+          {% if element.external %}
+            {% assign nav_link = element.external | replace: '!discord', site.discord %}
+            {% assign target = ' target="_blank"' %}
+          {% else %}
+            {% assign nav_link = site.baseurl | append: '/' | append: element.link %}
+            {% assign target = nil %}
+          {% endif %}
+          {% assign element_text = element.text %}
+          <li class="nav-item">
+            <a class="nav-link{% if element.link == page.name %} active" aria-current="page{% endif %}" href="{{ nav_link }}"{{ target }}>
+              <i class="{{ element.icon }} fa-fw"></i><span class="ps-2">{{ element_text }}</span>
+            </a>          
+          </li>
+      {% endfor %}
+      </ul>
+      {% include theme_dropdown.html %}      
+    </div>
+  </div>
+</nav>

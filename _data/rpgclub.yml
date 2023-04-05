@@ -1,0 +1,33 @@
+---
+- name: Octopath Traveler II
+  date:
+    release: 2023-02-24
+    select: 2023-03-01
+- name: Fire Emblem Engage
+  date:
+    release: 2023-01-20
+    select: 2023-02-01
+- name: The DioField Chronicle
+  date:
+    release: 2022-09-20
+    select: 2022-10-01
+- name: Live A Live
+  date:
+    release: 1994-09-02
+    select: 2022-07-01
+- name: Tales of Vesperia
+  date:
+    release: 2008-08-26
+    select: 2022-05-01
+- name: Triangle Strategy
+  date:
+    release: 2022-03-04
+    select: 2022-04-01
+- name: Elden Ring
+  date:
+    release: 2022-02-25
+    select: 2022-03-01
+- name: "The Legend of Heroes: Trails in the Sky"
+  date:
+    release: 2011-03-29
+    select: 2022-02-01
