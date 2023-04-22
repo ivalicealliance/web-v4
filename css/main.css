@@ -76,7 +76,7 @@ h1, h2, h3, h4, h5, h6 {
     filter: saturate(1.25) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-success));
   }
   50% {
-    filter: saturate(1.5) brightness(1.3) drop-shadow(0 0 1rem var(--bs-success));
+    filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 1rem var(--bs-success));
   }
 }
 @keyframes glower-idle {
@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
     filter: saturate(1) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-warning));
   }
   50% {
-    filter: saturate(1.25) brightness(1.3) drop-shadow(0 0 0.75rem var(--bs-warning));
+    filter: saturate(1.25) brightness(1.2) drop-shadow(0 0 0.75rem var(--bs-warning));
   }
 }
 @keyframes glower-dnd {
@@ -92,6 +92,6 @@ h1, h2, h3, h4, h5, h6 {
     filter: saturate(0.75) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-danger));
   }
   50% {
-    filter: saturate(1) brightness(1.3) drop-shadow(0 0 0.5rem var(--bs-danger));
+    filter: saturate(1) brightness(1.2) drop-shadow(0 0 0.5rem var(--bs-danger));
   }
 }

@@ -91,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
         }
 
         50% {
-            filter: saturate(1.5) brightness(1.3) drop-shadow(0 0 1rem var(--bs-success));
+            filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 1rem var(--bs-success));
         }
     }
 
@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5, h6 {
         }
 
         50% {
-            filter: saturate(1.25) brightness(1.3) drop-shadow(0 0 0.75rem var(--bs-warning));
+            filter: saturate(1.25) brightness(1.2) drop-shadow(0 0 0.75rem var(--bs-warning));
         }
     }
 
@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
         }
 
         50% {
-            filter: saturate(1.0) brightness(1.3) drop-shadow(0 0 0.5rem var(--bs-danger));
+            filter: saturate(1.0) brightness(1.2) drop-shadow(0 0 0.5rem var(--bs-danger));
         }
     }
 }
