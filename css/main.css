@@ -62,36 +62,36 @@ h1, h2, h3, h4, h5, h6 {
 .sprite-online {
   animation-name: glower-online;
 }
+@keyframes glower-online {
+  0%, 100% {
+    filter: saturate(1.25) brightness(1) drop-shadow(0 0 0.25rem var(--bs-success));
+  }
+  50% {
+    filter: saturate(1.5) brightness(1.1) drop-shadow(0 0 1rem var(--bs-success));
+  }
+}
 .sprite-idle {
   animation-name: glower-idle;
+}
+@keyframes glower-idle {
+  0%, 100% {
+    filter: saturate(1) brightness(1) drop-shadow(0 0 0.25rem var(--bs-warning));
+  }
+  50% {
+    filter: saturate(1.25) brightness(1.1) drop-shadow(0 0 0.75rem var(--bs-warning));
+  }
 }
 .sprite-dnd {
   animation-name: glower-dnd;
 }
-.sprite-offline {
-  filter: saturate(0.25) brightness(0.8);
-}
-@keyframes glower-online {
-  0%, 100% {
-    filter: saturate(1.25) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-success));
-  }
-  50% {
-    filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 1rem var(--bs-success));
-  }
-}
-@keyframes glower-idle {
-  0%, 100% {
-    filter: saturate(1) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-warning));
-  }
-  50% {
-    filter: saturate(1.25) brightness(1.2) drop-shadow(0 0 0.75rem var(--bs-warning));
-  }
-}
 @keyframes glower-dnd {
   0%, 100% {
-    filter: saturate(0.75) brightness(1.1) drop-shadow(0 0 0.25rem var(--bs-danger));
+    filter: saturate(0.75) brightness(1) drop-shadow(0 0 0.25rem var(--bs-danger));
   }
   50% {
-    filter: saturate(1) brightness(1.2) drop-shadow(0 0 0.5rem var(--bs-danger));
+    filter: saturate(1) brightness(1.1) drop-shadow(0 0 0.5rem var(--bs-danger));
   }
+}
+.sprite-offline {
+  filter: saturate(0.25) brightness(0.8);
 }
