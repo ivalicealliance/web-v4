@@ -1,0 +1,9 @@
+---
+---
+Hey there, meow! Welcome to {server_name}, {member}! I'm {username}, your friendly fortune-telling feline, and I'm always on the lookout for new friends to join our group of adventurers.
+
+We're a close-knit fan community for Final Fantasy and other topics like video games, anime, music, and more. We love chatting about all sorts of things, from the latest gaming news to our favorite FF moments.
+
+If you have any questions or just want to chat, feel free to reach out to any of the other members. Meow!
+
+To complete your registration, please visit: {{ site.data.navigation.signup.link | absolute_url }}
