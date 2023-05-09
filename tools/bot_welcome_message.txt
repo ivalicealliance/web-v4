@@ -1,9 +1,9 @@
 ---
 ---
-Hey there, meow! Welcome to {server_name}, {member}! I'm {username}, your friendly fortune-telling feline, and I'm always on the lookout for new friends to join our group of adventurers.
+Welcome, {member}, to the grand stage of {server_name}! I'm {username}, your fortune-telling guide in the shape of a robotic cat. Oh, the stars have aligned well to bring you here.
 
-We're a close-knit fan community for Final Fantasy and other topics like video games, anime, music, and more. We love chatting about all sorts of things, from the latest gaming news to our favorite FF moments.
+We're a lively crew, bonded by our love for Final Fantasy, video games, anime, music, and a world full of wonder and entertainment. We share everything from the latest captivating tales to our treasured Final Fantasy moments. It's all part of the grand adventure!
 
-If you have any questions or just want to chat, feel free to reach out to any of the other members. Meow!
+To start your journey with us, we've laid out the steps to complete your registration at: https://www.ivalicealliance.net/signup.html
 
-To complete your registration, please visit: {{ site.data.navigation.signup.link | absolute_url }}
+The future awaits, and it's looking brighter with you in it!
