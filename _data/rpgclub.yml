@@ -1,4 +1,8 @@
 ---
+- name: Final Fantasy XVI
+  date:
+    release: 2023-06-22
+    select: 2023-07-01
 - name: Xenosaga Episode 1
   date:
     release: 2003-02-25
