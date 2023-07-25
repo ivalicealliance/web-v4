@@ -25,17 +25,11 @@ timezone: America/Los_Angeles
 year: 2008
 author: 
   name: Balthier
-  twitter: balthier_ex
 
 # Data
 
 construct8: https://us-central1-river-octagon-219300.cloudfunctions.net/construct8
 discord: https://discord.gg/TEVk6n5
-twitter:
-  username: clan_ia
-social:
-  links:
-    - https://twitter.com/clan_ia
 github: ivalicealliance
 
 # Defaults
