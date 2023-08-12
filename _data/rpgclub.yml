@@ -1,4 +1,8 @@
 ---
+- name: Baldur's Gate III
+  date:
+    release: 2023-08-03
+    select: 2023-08-05
 - name: Final Fantasy XVI
   date:
     release: 2023-06-22
