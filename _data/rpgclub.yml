@@ -1,4 +1,8 @@
 ---
+- name: Sea of Stars
+  date:
+    release: 2023-08-29
+    select: 2023-09-01
 - name: Baldur's Gate III
   date:
     release: 2023-08-03
