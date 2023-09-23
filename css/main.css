@@ -19,6 +19,10 @@ h1, h2, h3, h4, h5, h6 {
   filter: brightness(1.4) contrast(0.7) saturate(0.7);
 }
 
+.nav-link.active {
+  font-weight: bold;
+}
+
 .header-gradient {
   /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 700,  Pink 50: 700 */
   background: linear-gradient(to bottom right, #1975D2, #C2185C);

@@ -21,6 +21,10 @@ h1, h2, h3, h4, h5, h6 {
             saturate(0.7);
 }
 
+.nav-link.active {
+    font-weight: bold;
+}
+
 @mixin gradient-text($startColor, $endColor) {
     background: linear-gradient(to bottom right, $startColor, $endColor);
     -webkit-background-clip: text;
