@@ -29,24 +29,19 @@ icon: rpgclub
   play, and share their passion for this genre!
 </p>
 
-<h3 class="fw-light">Chronicle</h3>
-
-<div class="container">
+<h3 class="fw-light">Current Chapter</h3>
+<div class="container mb-4">
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for card in site.data.rpgclub %}
-    <div class="col">
-      <div class="card rounded-5 shadow-sm">
-        <img src="assets/covers/{{ card.name | slugify }}.jpg" class="card-img-top rounded-top-5" alt="{{ card.name }}" loading="lazy">
-        <div class="card-body">
-          <h5 class="card-title">{{ card.name }}</h5>
-          <h6 class="fw-light">Selected</h6>
-          <p class="card-text">{{ card.date.select | date: "%B, %Y" }}</p>
-          <h6 class="fw-light">Released</h6>
-          <p class="card-text">{{ card.date.release | date: "%B %d, %Y" }}</p>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
+    {% assign current_card = site.data.rpgclub[0] %}
+    {% include club_card.html card=current_card %}
   </div>
 </div>
 
+<h3 class="fw-light">Chronicle</h3>
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for card in site.data.rpgclub offset:1 %}
+        {% include club_card.html card=card %}
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="col">
+    <div class="card rounded-5 shadow-sm">
+      <img src="assets/covers/{{ include.card.name | slugify }}.jpg" class="card-img-top rounded-top-5" alt="{{ include.card.name }}" loading="lazy">
+      <div class="card-body">
+        <h5 class="card-title">{{ include.card.name }}</h5>
+        <h6 class="fw-light">Selected</h6>
+        <p class="card-text">{{ include.card.date.select | date: "%B, %Y" }}</p>
+        <h6 class="fw-light">Released</h6>
+        <p class="card-text">{{ include.card.date.release | date: "%B %d, %Y" }}</p>
+      </div>
+    </div>
+ </div>
+ 
