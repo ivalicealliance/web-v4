@@ -1,4 +1,8 @@
 ---
+- name: "Star Ocean: The Second Story"
+  date:
+    release: 1998-07-30
+    select: 2023-11-01
 - name: Sweet Home
   date:
     release: 1989-12-15
