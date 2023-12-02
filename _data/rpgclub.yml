@@ -1,4 +1,8 @@
 ---
+- name: "Super Mario RPG"
+  date:
+    release: 1996-03-09
+    select: 2023-12-01
 - name: "Star Ocean: The Second Story"
   date:
     release: 1998-07-30
