@@ -1,4 +1,8 @@
 ---
+- name: "Final Fantasy IV"
+  date:
+    release: 1991-07-19
+    select: 2024-01-01
 - name: "Super Mario RPG"
   date:
     release: 1996-03-09
