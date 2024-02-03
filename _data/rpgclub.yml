@@ -1,4 +1,8 @@
 ---
+- name: "Pokemon Sun & Moon"
+  date:
+    release: 2016-11-18
+    select: 2024-02-01
 - name: "Final Fantasy IV"
   date:
     release: 1991-07-19
