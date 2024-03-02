@@ -1,4 +1,8 @@
 ---
+- name: Unicorn Overlord
+  date:
+    release: 2024-03-08
+    select: 2024-03-01
 - name: Pokemon Sun & Moon
   date:
     release: 2016-11-18
