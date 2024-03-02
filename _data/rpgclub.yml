@@ -1,13 +1,13 @@
 ---
-- name: "Pokemon Sun & Moon"
+- name: Pokemon Sun & Moon
   date:
     release: 2016-11-18
     select: 2024-02-01
-- name: "Final Fantasy IV"
+- name: Final Fantasy IV
   date:
     release: 1991-07-19
     select: 2024-01-01
-- name: "Super Mario RPG"
+- name: Super Mario RPG
   date:
     release: 1996-03-09
     select: 2023-12-01
