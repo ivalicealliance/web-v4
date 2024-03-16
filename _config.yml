@@ -13,6 +13,7 @@ exclude:
   - "LICENSE"
   - "Gemfile"
   - "Gemfile.lock"  
+  - "requirements.txt"
 
 # Site
 
