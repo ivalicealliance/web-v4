@@ -38,10 +38,70 @@ icon: rpgclub
 </div>
 
 <h3 class="fw-light">Chronicle</h3>
-<div class="container">
+<div class="container mb-4">
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for card in site.data.rpgclub offset:1 %}
         {% include club_card.html card=card %}
     {% endfor %}
   </div>
+</div>
+
+<div class="container mb-4">
+  <h3 class="fw-light">Statistics</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Stat</th>
+        <th scope="col">Value</th>
+        <th scope="col">Game</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Age</td>
+        <td>{{ site.data.stats.average_age }}</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Median Age</td>
+        <td>{{ site.data.stats.median_age }}</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Longest Selection Time</td>
+        <td>{{ site.data.stats.longest_time_to_selection.duration }}</td>
+        <td><a href="#{{ site.data.stats.longest_time_to_selection.title | slugify }}" class="game-link text-decoration-none">{{ site.data.stats.longest_time_to_selection.title }}</a></td>
+      </tr>
+      <tr>
+        <td>Shortest Selection Time</td>
+        <td>
+          {% if site.data.stats.shortest_time_to_selection.duration contains "-" %}
+            Ahead by {{ site.data.stats.shortest_time_to_selection.duration | remove: "-" }}
+          {% else %}
+            {{ site.data.stats.shortest_time_to_selection.duration }}
+          {% endif %}
+        </td>
+        <td><a href="#{{ site.data.stats.shortest_time_to_selection.title | slugify }}" class="game-link text-decoration-none">{{ site.data.stats.shortest_time_to_selection.title }}</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Decade</th>
+        <th scope="col">Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in site.data.stats.games_per_decade %}
+      {% assign decade = item[0] %}
+      {% assign count = item[1] %}
+      <tr>
+        <td>{{ decade }}s</td>
+        <td>{{ count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
