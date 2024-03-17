@@ -10,18 +10,31 @@ You can also create new files. HTML files can go where it makes most sense (usua
 
 ## Building Locally
 ### Requirements
+- Python 3
 - Ruby
 - Sass compiler ([Dart Sass](https://sass-lang.com/dart-sass))
 
 ### Installation
-Run these commands once in your git folder.
+Run these commands once in your git folder to install Ruby dependencies:
 
 ```bash
 > bundle install
 ```
 
+For Python dependencies, run:
+
+```bash
+> python3 tools/_rpg_clubstats.py
+```
+
 ### Building
 When you are ready to build the site, you should run these commands. 
+
+To create or update statistics, run the stats generator:
+
+```bash
+> python3 tools/_rpg_clubstats.py
+```
 
 If you're planning to make content changes, build the site and watch:
 ```bash
