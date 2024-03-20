@@ -1,68 +1,70 @@
 import yaml
 from datetime import datetime, timedelta
-from statistics import median
 
 def load_games_data(filepath='_data/rpgclub.yml'):
-    with open(filepath, 'r') as file:
-        return yaml.load(file, Loader=yaml.FullLoader)
+    with open(filepath) as file:
+        return yaml.safe_load(file)
 
-def calculate_differences_and_decades(games_data):
-    differences_with_title = []
+def calculate_differences(games_data):
+    return [
+        {
+            "title": game["name"], 
+            "difference": (game["date"]["select"] - game["date"]["release"]).days
+        } 
+        for game in games_data
+    ]
+
+def calculate_games_per_decade(games_data):
     games_per_decade = {}
-    
     for game in games_data:
-        release_date = game["date"]["release"]
-        select_date = game["date"]["select"]
-        difference = (select_date - release_date).days
-        differences_with_title.append({"title": game["name"], "difference": difference, "release_date": release_date, "select_date": select_date})        
-        decade = (release_date.year // 10) * 10
+        decade = (game["date"]["release"].year // 10) * 10
         games_per_decade[decade] = games_per_decade.get(decade, 0) + 1
-    
-    return differences_with_title, games_per_decade
+    return games_per_decade
 
 def convert_duration(days):
-    if days > 364:
-        years = round(days / 365)
-        return f"{years} years"
-    elif days > 30:
-        months = round(days / 30)
-        return f"{months} months"
+    abs_days = abs(days)
+    if abs_days >= 365:
+        years = abs_days // 365
+        return f"{'-' if days < 0 else ''}{years} years"
+    elif abs_days >= 30:
+        months = abs_days // 30
+        return f"{'-' if days < 0 else ''}{months} months"
     else:
-        return f"{days} days"
+        return f"{'-' if days < 0 else ''}{abs_days} days"
 
-def calculate_stats(differences_with_title):
-    median_age_days = median(item["difference"] for item in differences_with_title)
-    average_age_days = sum(item["difference"] for item in differences_with_title) / len(differences_with_title)
-    return convert_duration(median_age_days), convert_duration(average_age_days)
+def calculate_median_game(differences_sorted):
+    median_index = len(differences_sorted) // 2
+    return differences_sorted[median_index]
 
-def prepare_stats_data(differences_sorted, median_age, average_age, games_per_decade):
-    shortest = differences_sorted[0]
-    longest = differences_sorted[-1]
+def calculate_average_duration(differences):
+    total_days = sum(item["difference"] for item in differences)
+    average_days = total_days / len(differences)
+    return average_days
+
+def prepare_stats_data(differences_sorted, games_per_decade):
+    shortest, longest = differences_sorted[0], differences_sorted[-1]
+    median_game = calculate_median_game(differences_sorted)
+    average_duration = calculate_average_duration(differences_sorted)
+    
     return {
-        "shortest_time_to_selection": {
-            "title": shortest["title"],
-            "duration": convert_duration(shortest["difference"])
-        },
-        "longest_time_to_selection": {
-            "title": longest["title"],
-            "duration": convert_duration(longest["difference"])
-        },
-        "median_age": median_age,
-        "average_age": average_age,
+        "shortest_time_to_selection": {"title": shortest["title"], "duration": convert_duration(shortest["difference"])},
+        "longest_time_to_selection": {"title": longest["title"], "duration": convert_duration(longest["difference"])},
+        "median_game": {"title": median_game["title"], "duration": convert_duration(median_game["difference"])},
+        "average_duration": convert_duration(int(round(average_duration))),
         "games_per_decade": games_per_decade
     }
 
 def write_stats_to_yaml(stats_data, filepath='_data/stats.yml'):
     with open(filepath, 'w') as file:
-        yaml.dump(stats_data, file)
+        yaml.dump(stats_data, file, default_flow_style=False)
     print("Stats updated successfully.")
 
 def main():
     games_data = load_games_data()
-    differences_with_title, games_per_decade = calculate_differences_and_decades(games_data)
-    differences_sorted = sorted(differences_with_title, key=lambda x: x["difference"])
-    median_age, average_age = calculate_stats(differences_with_title)
-    stats_data = prepare_stats_data(differences_sorted, median_age, average_age, games_per_decade)
+    differences = calculate_differences(games_data)
+    games_per_decade = calculate_games_per_decade(games_data)
+    differences_sorted = sorted(differences, key=lambda x: x["difference"])
+    stats_data = prepare_stats_data(differences_sorted, games_per_decade)
     write_stats_to_yaml(stats_data)
 
 if __name__ == "__main__":

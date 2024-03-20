@@ -59,13 +59,13 @@ icon: rpgclub
     <tbody>
       <tr>
         <td>Average Age</td>
-        <td>{{ site.data.stats.average_age }}</td>
+        <td>{{ site.data.stats.average_duration }}</td>
         <td>-</td>
       </tr>
       <tr>
-        <td>Median Age</td>
-        <td>{{ site.data.stats.median_age }}</td>
-        <td>-</td>
+        <td>Median Selection Time</td>
+        <td>{{ site.data.stats.median_game.duration }}</td>
+        <td><a href="#{{ site.data.stats.median_game.title | slugify }}" class="game-link text-decoration-none">{{ site.data.stats.median_game.title }}</a></td>
       </tr>
       <tr>
         <td>Longest Selection Time</td>
