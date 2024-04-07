@@ -1,0 +1,40 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Stat</th>
+      <th scope="col">Value</th>
+      <th scope="col">Game</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Average Age</td>
+      <td>{{ site.data.stats.average_duration }}</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Median Selection Time</td>
+      <td>{{ site.data.stats.median_game.duration }}</td>
+      <td><a href="#{{ site.data.stats.median_game.title | slugify }}" class="game-link text-decoration-none">{{
+          site.data.stats.median_game.title }}</a></td>
+    </tr>
+    <tr>
+      <td>Longest Selection Time</td>
+      <td>{{ site.data.stats.longest_time_to_selection.duration }}</td>
+      <td><a href="#{{ site.data.stats.longest_time_to_selection.title | slugify }}"
+          class="game-link text-decoration-none">{{ site.data.stats.longest_time_to_selection.title }}</a></td>
+    </tr>
+    <tr>
+      <td>Shortest Selection Time</td>
+      <td>
+        {% if site.data.stats.shortest_time_to_selection.duration contains "-" %}
+        Ahead by {{ site.data.stats.shortest_time_to_selection.duration | remove: "-" }}
+        {% else %}
+        {{ site.data.stats.shortest_time_to_selection.duration }}
+        {% endif %}
+      </td>
+      <td><a href="#{{ site.data.stats.shortest_time_to_selection.title | slugify }}"
+          class="game-link text-decoration-none">{{ site.data.stats.shortest_time_to_selection.title }}</a></td>
+    </tr>
+  </tbody>
+</table>

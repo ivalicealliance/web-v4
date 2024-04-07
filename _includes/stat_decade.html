@@ -1,0 +1,18 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Decade</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in site.data.stats.games_per_decade %}
+    {% assign decade = item[0] %}
+    {% assign count = item[1] %}
+    <tr>
+      <td>{{ decade }}s</td>
+      <td>{{ count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
