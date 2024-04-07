@@ -29,25 +29,20 @@ icon: rpgclub
   play, and share their passion for this genre!
 </p>
 
-<h3 class="fw-light">Current Chapter</h3>
-<div class="container mb-4">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% assign current_card = site.data.rpgclub[0] %}
-    {% include club_card.html card=current_card %}
-  </div>
+<h3 class="fw-light mt-4">Current Chapter</h3>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% assign current_card = site.data.rpgclub[0] %}
+  {% include club_card.html card=current_card %}
 </div>
 
-<h3 class="fw-light">Chronicle</h3>
-<div class="container mb-4">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for card in site.data.rpgclub offset:1 %}
-        {% include club_card.html card=card %}
-    {% endfor %}
-  </div>
+
+<h3 class="fw-light mt-4">Chronicle</h3>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for card in site.data.rpgclub offset:1 %}
+  {% include club_card.html card=card %}
+  {% endfor %}
 </div>
 
-<div class="container">
-  <h3 class="fw-light">Statistics</h3>
-  {% include stat_selectiontime.html %}
-  {% include stat_decade.html %}
-</div>
+<h3 class="fw-light mt-4">Statistics</h3>
+{% include stat_selectiontime.html %}
+{% include stat_decade.html %}
