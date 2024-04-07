@@ -1,6 +1,6 @@
---- 
-layout: default 
-title: Members 
+---
+layout: default
+title: Members
 description: Complete list of all Members currently in the community.
 icon: members
 ---
@@ -17,16 +17,16 @@ icon: members
     </div>
 </div>
 
-<script>    
+<script>
     const url = '{{ site.construct8 }}/members.json';
     const avatarPlaceholder = 'https://ui-avatars.com/api/?length=2&size=256&background=random&name=';
     const spritePath = '/assets/sprites/ffrk/'
-    const dateOptions = {  
-        year: "numeric", month: "long", day: "numeric", 
+    const dateOptions = {
+        year: "numeric", month: "long", day: "numeric",
         hour: "2-digit", minute: "2-digit", timeZoneName: "short"
-    };  
+    };
 
-    const statuses = ["online", "idle", "dnd", "offline"] 
+    const statuses = ["online", "idle", "dnd", "offline"]
     const statusTemplate = context => {
         if (statuses.includes(context.presence.status)) {
             return `<i class="fa-solid fa-user ${context.presence.status}" data-fa-transform="shrink-5"></i>`
@@ -43,7 +43,7 @@ icon: members
         }
     }
 
-    const memberTemplate = context => 
+    const memberTemplate = context =>
         `
         <div class="col">
             <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
@@ -70,7 +70,7 @@ icon: members
                         .map(memberTemplate)
                         .join('')
                     }
-                </div>    
+                </div>
                 `
             )
             .join('')}
@@ -98,9 +98,9 @@ icon: members
             </div>
 	    `;
 
-    const errorMessage = 
+    const errorMessage =
         `
-            <i class="fa-solid fa-triangle-exclamation"></i> Unfortunately {{ construct8 }} is unreachable at the moment. Please try again later. If this issue persists, 
+            <i class="fa-solid fa-triangle-exclamation"></i> Unfortunately {{ construct8 }} is unreachable at the moment. Please try again later. If this issue persists,
             bring it to the attention of the community's leadership.
         `;
 
@@ -111,5 +111,5 @@ icon: members
         })
         .catch((error) => {
             document.getElementById('memberlist').innerHTML = errorMessage;
-        }); 
+        });
 </script>
