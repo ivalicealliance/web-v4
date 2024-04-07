@@ -35,6 +35,9 @@ icon: rpgclub
   {% include club_card.html card=current_card %}
 </div>
 
+<h3 class="fw-light mt-4">Statistics</h3>
+{% include stat_selectiontime.html %}
+{% include stat_decade.html %}
 
 <h3 class="fw-light mt-4">Chronicle</h3>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -42,7 +45,3 @@ icon: rpgclub
   {% include club_card.html card=card %}
   {% endfor %}
 </div>
-
-<h3 class="fw-light mt-4">Statistics</h3>
-{% include stat_selectiontime.html %}
-{% include stat_decade.html %}
