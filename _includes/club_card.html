@@ -4,7 +4,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ include.card.name }}</h5>
         <h6 class="fw-light">Selected</h6>
-        <p class="card-text">{{ include.card.date.select | date: "%B, %Y" }}</p>
+        <p class="card-text">{{ include.card.date.select | date: "%B %e, %Y" }}</p>
         <h6 class="fw-light">Released</h6>
         <p class="card-text">{{ include.card.date.release | date: "%B %e, %Y" }}</p>
       </div>
