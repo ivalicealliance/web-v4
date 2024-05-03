@@ -1,4 +1,8 @@
 ---
+- name: "Eiyuden Chronicle: Hundred Heroes"
+  date:
+    release: 2024-04-23
+    select: 2024-05-01
 - name: Unicorn Overlord
   date:
     release: 2024-03-08
