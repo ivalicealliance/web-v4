@@ -1,4 +1,8 @@
 ---
+- name: Shin Megami Tensei V Vengeance
+  date:
+    release: 2024-06-14
+    select: 2024-07-01
 - name: "Eiyuden Chronicle: Hundred Heroes"
   date:
     release: 2024-04-23
