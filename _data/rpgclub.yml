@@ -1,4 +1,8 @@
 ---
+- name: Chrono Trigger
+  date:
+    release: 1995-03-11
+    select: 2024-08-01
 - name: Shin Megami Tensei V Vengeance
   date:
     release: 2024-06-14
