@@ -1,4 +1,8 @@
 ---
+- name: Final Fantasy Tactics
+  date:
+    release: 1997-06-20
+    select: 2024-09-01
 - name: Chrono Trigger
   date:
     release: 1995-03-11
