@@ -1,4 +1,8 @@
 ---
+- name: Final Fantasy XVI Complete Edition
+  date:
+    release: 2024-09-17
+    select: 2024-10-01
 - name: Final Fantasy Tactics
   date:
     release: 1997-06-20
