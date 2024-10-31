@@ -1,4 +1,8 @@
 ---
+- name: "Metaphor: ReFantazio"
+  date: 
+    release: 2024-10-11
+    select: 2024-11-01
 - name: Final Fantasy XVI Complete Edition
   date:
     release: 2024-09-17
