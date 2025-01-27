@@ -1,4 +1,8 @@
 ---
+- name: "Final Fantasy VII Rebirth"
+  date: 
+    release: 2024-02-29
+    select: 2025-02-01
 - name: "Metaphor: ReFantazio"
   date: 
     release: 2024-10-11
