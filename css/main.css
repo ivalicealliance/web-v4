@@ -24,17 +24,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-gradient {
-  /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 700,  Pink 50: 700 */
-  background: linear-gradient(to bottom right, #1975D2, #C2185C);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-[data-bs-theme=dark] .header-gradient {
-  /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 300,  Pink 50: 300 */
-  background: linear-gradient(to bottom right, #64B4F6, #F06294);
+  /* PANTONE 17-4037 TCX Ultramarine */
+  /* PANTONE 16-1546 TCX Living Coral */
+  background: linear-gradient(to bottom right, #5B7EBD, #FF6F61);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
