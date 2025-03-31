@@ -1,4 +1,8 @@
 ---
+- name: "PokeRogue"
+  date: 
+    release: 2024-03-22
+    select: 2025-04-01
 - name: "Final Fantasy VII Rebirth"
   date: 
     release: 2024-02-29
