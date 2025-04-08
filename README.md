@@ -18,13 +18,13 @@ You can also create new files. HTML files can go where it makes most sense (usua
 Run these commands once in your git folder to install Ruby dependencies:
 
 ```bash
-> bundle install
+bundle install
 ```
 
 For Python dependencies, run:
 
 ```bash
-> python3 tools/_rpg_clubstats.py
+python3 tools/_rpg_clubstats.py
 ```
 
 ### Building
@@ -33,12 +33,12 @@ When you are ready to build the site, you should run these commands.
 To create or update statistics, run the stats generator:
 
 ```bash
-> python3 tools/_rpg_clubstats.py
+python3 tools/_rpg_clubstats.py
 ```
 
 If you're planning to make content changes, build the site and watch:
 ```bash
-> bundle exec jekyll serve --watch
+bundle exec jekyll serve --watch
 ```
 
 If you're planning to make SCSS changes, compile `sass` and watch:
