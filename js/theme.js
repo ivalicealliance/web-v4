@@ -7,22 +7,38 @@
 (() => {
     'use strict'
   
+    const isValidTheme = theme => {
+      return theme && ['auto', 'light', 'dark'].includes(theme)
+    }
+
     const getThemeFromUrl = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const themeParam = urlParams.get('theme')
-      if (themeParam && ['auto', 'light', 'dark'].includes(themeParam)) {
-        return themeParam
-      }
-      return null
+      return isValidTheme(themeParam) ? themeParam : null
     }
 
-    const storedTheme = localStorage.getItem('theme')
-  
+    const getStoredTheme = () => {
+      return localStorage.getItem('theme')
+    }
+
+    const setStoredTheme = theme => {
+      if (isValidTheme(theme)) {
+        localStorage.setItem('theme', theme)
+      }
+    }
+
+    // Initialize theme from URL if present
+    const urlTheme = getThemeFromUrl()
+    if (urlTheme) {
+      setStoredTheme(urlTheme)
+    }
+
     const getPreferredTheme = () => {
       const urlTheme = getThemeFromUrl()
       if (urlTheme) {
         return urlTheme
       }
+      const storedTheme = getStoredTheme()
       if (storedTheme) {
         return storedTheme
       }
@@ -71,7 +87,7 @@
         .forEach(toggle => {
           toggle.addEventListener('click', () => {
             const theme = toggle.getAttribute('data-bs-theme-value')
-            localStorage.setItem('theme', theme)
+            setStoredTheme(theme)
             setTheme(theme)
             showActiveTheme(theme)
           })
