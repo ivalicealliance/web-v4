@@ -7,13 +7,25 @@
 (() => {
     'use strict'
   
+    const getThemeFromUrl = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const themeParam = urlParams.get('theme')
+      if (themeParam && ['auto', 'light', 'dark'].includes(themeParam)) {
+        return themeParam
+      }
+      return null
+    }
+
     const storedTheme = localStorage.getItem('theme')
   
     const getPreferredTheme = () => {
+      const urlTheme = getThemeFromUrl()
+      if (urlTheme) {
+        return urlTheme
+      }
       if (storedTheme) {
         return storedTheme
       }
-  
       return 'auto'
     }
   
