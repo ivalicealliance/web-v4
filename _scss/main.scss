@@ -1,3 +1,8 @@
+:root {
+  --gradient-start: #FF6F61; /* PANTONE 16-1546 TCX Living Coral */  
+  --gradient-end: #5B7EBD;   /* PANTONE 17-4037 TCX Ultramarine */
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
 }
@@ -15,14 +20,20 @@ h1, h2, h3, h4, h5, h6 {
     image-rendering: pixelated;
 }
 
-[data-bs-theme='dark'] .logo-theme {
-    filter: brightness(1.4)
-            contrast(0.7)
-            saturate(0.7);
-}
-
 .nav-link.active {
     font-weight: bold;
+}
+
+.logo-container {
+    aspect-ratio: 1;
+    margin: 0 auto;
+    background: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 @mixin gradient-text($startColor, $endColor) {
@@ -34,13 +45,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-gradient {
-    /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 700,  Pink 50: 700 */
-    @include gradient-text(#1975D2, #C2185C)
-}
-
-[data-bs-theme='dark'] .header-gradient {    
-    /* https://m2.material.io/design/color/the-color-system.html - Blue 50: 300,  Pink 50: 300 */
-    @include gradient-text(#64B4F6, #F06294)
+    @include gradient-text(var(--gradient-start), var(--gradient-end))
 }
 
 // Status

@@ -1,6 +1,6 @@
 :root {
-  --gradient-start: #FF6F61; /* PANTONE 16-1546 TCX Living Coral */  
-  --gradient-end: #5B7EBD;   /* PANTONE 17-4037 TCX Ultramarine */
+  --gradient-start: #FF6F61; /* PANTONE 16-1546 TCX Living Coral */
+  --gradient-end: #5B7EBD; /* PANTONE 17-4037 TCX Ultramarine */
 }
 
 body {
@@ -24,14 +24,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-.header-gradient {
-  background: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
 .logo-container {
   aspect-ratio: 1;
   margin: 0 auto;
@@ -42,6 +34,14 @@ h1, h2, h3, h4, h5, h6 {
   mask-size: contain;
   -webkit-mask-position: center;
   mask-position: center;
+}
+
+.header-gradient {
+  background: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .online {
