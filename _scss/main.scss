@@ -1,3 +1,5 @@
+@use "sass:list";
+
 :root {
   --gradient-start: #FF6F61; /* PANTONE 16-1546 TCX Living Coral */  
   --gradient-end: #5B7EBD;   /* PANTONE 17-4037 TCX Ultramarine */
@@ -95,8 +97,8 @@ h1, h2, h3, h4, h5, h6 {
     @each $name, $values in $statuses {
         &-#{$name} {
             @extend .sprite;
-            @include glower(glower-#{$name}, nth($values, 1), nth($values, 2), nth($values, 3), nth($values, 4));
             animation-name: glower-#{$name};
+            @include glower(glower-#{$name}, list.nth($values, 1), list.nth($values, 2), list.nth($values, 3), list.nth($values, 4));
         }
     }
 
