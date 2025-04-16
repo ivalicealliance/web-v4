@@ -1,6 +1,19 @@
 import yaml
 from datetime import datetime, timedelta
 
+def calculate_most_consecutive_months(games_data):
+    games_sorted = sorted(games_data, key=lambda g: g['date']['select'])
+    max_months = 0
+    max_game = None
+    for i, game in enumerate(games_sorted[:-1]):
+        current_date = game['date']['select']
+        next_date = games_sorted[i+1]['date']['select']
+        months = (next_date.year - current_date.year) * 12 + (next_date.month - current_date.month)
+        if months > max_months:
+            max_months = months
+            max_game = game['name']
+    return max_game, max_months if max_game else (None, 0)
+
 def load_games_data(filepath='_data/rpgclub.yml'):
     with open(filepath) as file:
         return yaml.safe_load(file)
@@ -41,17 +54,22 @@ def calculate_average_duration(differences):
     average_days = total_days / len(differences)
     return average_days
 
-def prepare_stats_data(differences_sorted, games_per_decade):
+def prepare_stats_data(differences_sorted, games_per_decade, games_data):
     shortest, longest = differences_sorted[0], differences_sorted[-1]
     median_game = calculate_median_game(differences_sorted)
     average_duration = calculate_average_duration(differences_sorted)
-    
+    most_consecutive_game, most_consecutive_count = calculate_most_consecutive_months(games_data)
+
     return {
         "shortest_time_to_selection": {"title": shortest["title"], "duration": convert_duration(shortest["difference"])},
         "longest_time_to_selection": {"title": longest["title"], "duration": convert_duration(longest["difference"])},
         "median_game": {"title": median_game["title"], "duration": convert_duration(median_game["difference"])},
         "average_duration": convert_duration(int(round(average_duration))),
-        "games_per_decade": games_per_decade
+        "games_per_decade": games_per_decade,
+        "most_consecutive_months": {
+            "title": most_consecutive_game,
+            "months": most_consecutive_count
+        }
     }
 
 def write_stats_to_yaml(stats_data, filepath='_data/stats.yml'):
@@ -64,7 +82,7 @@ def main():
     differences = calculate_differences(games_data)
     games_per_decade = calculate_games_per_decade(games_data)
     differences_sorted = sorted(differences, key=lambda x: x["difference"])
-    stats_data = prepare_stats_data(differences_sorted, games_per_decade)
+    stats_data = prepare_stats_data(differences_sorted, games_per_decade, games_data)
     write_stats_to_yaml(stats_data)
 
 if __name__ == "__main__":
