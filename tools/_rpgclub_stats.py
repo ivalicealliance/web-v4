@@ -58,7 +58,7 @@ def prepare_stats_data(differences_sorted, games_per_decade, games_data):
     shortest, longest = differences_sorted[0], differences_sorted[-1]
     median_game = calculate_median_game(differences_sorted)
     average_duration = calculate_average_duration(differences_sorted)
-    most_consecutive_game, most_consecutive_count = calculate_most_consecutive_months(games_data)
+    longest_streak_game, longest_streak_count = calculate_most_consecutive_months(games_data)
 
     return {
         "shortest_time_to_selection": {"title": shortest["title"], "duration": convert_duration(shortest["difference"])},
@@ -66,9 +66,9 @@ def prepare_stats_data(differences_sorted, games_per_decade, games_data):
         "median_game": {"title": median_game["title"], "duration": convert_duration(median_game["difference"])},
         "average_duration": convert_duration(int(round(average_duration))),
         "games_per_decade": games_per_decade,
-        "most_consecutive_months": {
-            "title": most_consecutive_game,
-            "months": most_consecutive_count
+        "longest_streak": {
+            "title": longest_streak_game,
+            "value": f"{longest_streak_count} months"
         }
     }
 
