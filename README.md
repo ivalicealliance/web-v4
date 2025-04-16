@@ -24,7 +24,7 @@ bundle install
 For Python dependencies, run:
 
 ```bash
-python3 tools/_rpg_clubstats.py
+pip install -r requirements.txt
 ```
 
 ### Building
