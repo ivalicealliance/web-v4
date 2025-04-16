@@ -33,7 +33,7 @@ When you are ready to build the site, you should run these commands.
 To create or update statistics, run the stats generator:
 
 ```bash
-python3 tools/_rpg_clubstats.py
+python3 tools/_rpgclub_stats.py
 ```
 
 If you're planning to make content changes, build the site and watch:
