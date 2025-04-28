@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Imprint Centering Guide</title>
+  <style>
+    body {
+      background: #f8f8f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .container {
+      position: relative;
+      width: 85vw;
+      height: 85vw;
+      max-width: 85vh;
+      max-height: 85vh;
+      aspect-ratio: 1 / 1;
+      background: #fff;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      border-radius: 12px;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .guide-x, .guide-y {
+      position: absolute;
+      background: #ff3366;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .guide-x {
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      transform: translateX(-1px);
+    }
+    .guide-y {
+      top: 50%;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      transform: translateY(-1px);
+    }
+    .logo-wrap {
+      position: relative;
+      width: 75%;
+      height: 75%;
+      z-index: 10;
+    }
+    .circle-guide {
+      box-sizing: border-box;
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      border: 2px dashed #33aaff;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .logo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: brightness(0) saturate(100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="guide-x"></div>
+    <div class="guide-y"></div>
+    <div class="logo-wrap">
+      <div class="circle-guide"></div>
+      <img class="logo" src="../assets/images/logo.svg" alt="Logo" />
+    </div>
+  </div>
+</body>
+</html>
