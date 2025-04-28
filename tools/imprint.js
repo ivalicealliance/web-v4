@@ -3,9 +3,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   const exportBtn = document.getElementById('export-png-btn');
   exportBtn.addEventListener('click', function () {
-    const logoWrap = document.querySelector('.logo-wrap');
-    const logoImg = logoWrap.querySelector('.logo');
-    const circleGuide = logoWrap.querySelector('.circle-guide');
+    const logoWrap = document.querySelector('.logo-canvas-inner');
+    const logoImg = logoWrap.querySelector('.logo-img');
 
     // Create a canvas
     const size = 4000;
