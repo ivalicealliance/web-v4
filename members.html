@@ -102,8 +102,7 @@ const memberTemplate = context =>
     <div class="col">
         <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
             <div class="card-img-top p-3 pb-0 mx-auto">
-                <div class="ratio ratio-1x1 rounded-5 bg-secondary bg-opacity-10"></div>
-                <img src="${spritePath + context.name.toLowerCase()}.png" alt="Avatar of ${context.name}" class="${animationTemplate(context)} pixelated ratio ratio-1x1 rounded-5 position-absolute top-0 start-0 w-100 h-100"
+                <img src="${spritePath + context.name.toLowerCase()}.png" alt="Avatar of ${context.name}" class="${animationTemplate(context)} pixelated ratio ratio-1x1 rounded-5"
                         onerror="this.src = '${avatarPlaceholder + context.name}';">
             </div>
             <div class="card-body text-center">
