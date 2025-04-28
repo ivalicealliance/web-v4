@@ -9,7 +9,63 @@ icon: members
 <a href="https://github.com/{{ site.github }}/construct8/" class="link-secondary">Construct8</a>
 {%- endcapture -%}
 
-<div id="memberlist">
+<style>
+.skeleton {
+  background-color: var(--bs-secondary-bg-subtle);
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s;
+}
+.skeleton::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0; left: -150px; height: 100%; width: 150px;
+  background: linear-gradient(90deg, transparent, var(--bs-secondary-bg) 40%, transparent 80%);
+  animation: shimmer 1.2s infinite;
+  transition: background 0.2s;
+}
+@keyframes shimmer {
+  100% { left: 100%; }
+}
+</style>
+<div id="memberlist-skeleton"></div>
+<script>
+function skeletonBlock(tag, classes, inner = '') {
+  return `<${tag} class="${classes}">${inner}</${tag}>`;
+}
+function skeletonMemberCard() {
+  return skeletonBlock(
+    'div', 'col',
+    skeletonBlock(
+      'div', 'card rounded-5 shadow-sm position-relative overflow-hidden',
+        skeletonBlock('div', 'card-img-top p-3 pb-0 mx-auto',
+          skeletonBlock('div', 'skeleton ratio ratio-1x1 rounded-5')
+        ) +
+        skeletonBlock('div', 'card-body text-center',
+          skeletonBlock('div', 'skeleton h6 card-title fw-light w-75 w-md-50 mx-auto', '&nbsp;')
+        )
+    )
+  );
+}
+function skeletonRoleBlock(memberCount) {
+  return skeletonBlock(
+    'div', '',
+      skeletonBlock('div', 'skeleton h5 fw-light w-25', '&nbsp;') +
+      skeletonBlock('div', 'mb-4',
+        skeletonBlock('div', 'row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4',
+          Array(memberCount).fill('').map(skeletonMemberCard).join('')
+        )
+      )
+  );
+}
+document.addEventListener('DOMContentLoaded', function() {
+  const skeletonHTML = [2, 3, 20].map(skeletonRoleBlock).join('');
+  document.getElementById('memberlist-skeleton').innerHTML = skeletonHTML;
+});
+</script>
+<div id="memberlist" style="display:none">
     <div class="text-center">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -110,8 +166,12 @@ icon: members
         .then((resp) => resp.json())
         .then((context) => {
             document.getElementById('memberlist').innerHTML = template(context);
+            document.getElementById('memberlist-skeleton').style.display = 'none';
+            document.getElementById('memberlist').style.display = '';
         })
         .catch((error) => {
             document.getElementById('memberlist').innerHTML = errorMessage;
+            document.getElementById('memberlist-skeleton').style.display = 'none';
+            document.getElementById('memberlist').style.display = '';
         });
 </script>
