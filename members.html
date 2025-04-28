@@ -30,11 +30,15 @@ icon: members
   100% { left: 100%; }
 }
 </style>
+
 <div id="memberlist-skeleton"></div>
+<div id="memberlist" style="display:none"></div>
+
 <script>
 function skeletonBlock(tag, classes, inner = '') {
   return `<${tag} class="${classes}">${inner}</${tag}>`;
 }
+
 function skeletonMemberCard() {
   return skeletonBlock(
     'div', 'col',
@@ -49,6 +53,7 @@ function skeletonMemberCard() {
     )
   );
 }
+
 function skeletonRoleBlock(memberCount) {
   return skeletonBlock(
     'div', '',
@@ -65,108 +70,106 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('memberlist-skeleton').innerHTML = skeletonHTML;
 });
 </script>
-<div id="memberlist" style="display:none">
-</div>
 
 <script>
-    const url = '{{ site.construct8 }}/members.json';
-    const avatarPlaceholder = 'https://ui-avatars.com/api/?length=2&size=256&background=random&name=';
-    const spritePath = '/assets/sprites/ffrk/'
-    const dateOptions = {
-        year: "numeric", month: "long", day: "numeric",
-        hour: "2-digit", minute: "2-digit", timeZoneName: "short"
-    };
+const url = '{{ site.construct8 }}/members.json';
+const avatarPlaceholder = 'https://ui-avatars.com/api/?length=2&size=256&background=random&name=';
+const spritePath = '/assets/sprites/ffrk/'
+const dateOptions = {
+    year: "numeric", month: "long", day: "numeric",
+    hour: "2-digit", minute: "2-digit", timeZoneName: "short"
+};
 
-    const statuses = ["online", "idle", "dnd", "offline"]
-    const statusTemplate = context => {
-        if (statuses.includes(context.presence.status)) {
-            return `<i class="fa-solid fa-user ${context.presence.status}" data-fa-transform="shrink-5"></i>`
-        } else {
-            return ``
-        }
+const statuses = ["online", "idle", "dnd", "offline"]
+const statusTemplate = context => {
+    if (statuses.includes(context.presence.status)) {
+        return `<i class="fa-solid fa-user ${context.presence.status}" data-fa-transform="shrink-5"></i>`
+    } else {
+        return ``
     }
+}
 
-    const animationTemplate = context => {
-        if (statuses.includes(context.presence.status)) {
-            return `sprite-${context.presence.status}`
-        } else {
-            return ``
-        }
+const animationTemplate = context => {
+    if (statuses.includes(context.presence.status)) {
+        return `sprite-${context.presence.status}`
+    } else {
+        return ``
     }
+}
 
-    const memberTemplate = context =>
-        `
-        <div class="col">
-            <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
-                <div class="card-img-top p-3 pb-0 mx-auto">
-                    <img src="${spritePath + context.name.toLowerCase()}.png" alt="Avatar of ${context.name}" class="${animationTemplate(context)} pixelated ratio ratio-1x1 rounded-5"
-                            onerror="this.src = '${avatarPlaceholder + context.name}';">
-                </div>
-                <div class="card-body text-center">
-                    <h6 class="card-title fw-light">${statusTemplate(context)} ${context.name}</h5>
-                </div>
+const memberTemplate = context =>
+    `
+    <div class="col">
+        <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
+            <div class="card-img-top p-3 pb-0 mx-auto">
+                <img src="${spritePath + context.name.toLowerCase()}.png" alt="Avatar of ${context.name}" class="${animationTemplate(context)} pixelated ratio ratio-1x1 rounded-5"
+                        onerror="this.src = '${avatarPlaceholder + context.name}';">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title fw-light">${statusTemplate(context)} ${context.name}</h6>
             </div>
         </div>
-        `
+    </div>
+    `
 
-    const template = list =>
-        `
-        ${list.roles
-            .map(role =>
-                `
-                <h5 class="fw-light">${role.name}</h5>
-                <div class="mb-4">
-                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
-                        ${list.members
-                            .filter(member => member.position === role.position)
-                            .map(memberTemplate)
-                            .join('')
-                        }
-                    </div>
-                </div>
-                `
-            )
-            .join('')}
-            <div class="text-center">
-                <div class="d-inline-flex">
-                    <ul class="text-body-tertiary list-inline m-0">
-                        <li class="list-inline-item">
-                            <i class="fa-solid fa-users"></i>
-                            ${list.meta.membercount} members
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa-solid fa-sitemap"></i>
-                            ${list.meta.rolecount} roles
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa-solid fa-robot"></i>
-                            {{ construct8 }}
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa-solid fa-clock"></i>
-                            ${(new Date(list.meta.lastModified)).toLocaleTimeString('en-us', dateOptions)}
-                        </li>
-                    </ul>
+const template = list =>
+    `
+    ${list.roles
+        .map(role =>
+            `
+            <h5 class="fw-light">${role.name}</h5>
+            <div class="mb-4">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
+                    ${list.members
+                        .filter(member => member.position === role.position)
+                        .map(memberTemplate)
+                        .join('')
+                    }
                 </div>
             </div>
-	    `;
+            `
+        )
+        .join('')}
+        <div class="text-center">
+            <div class="d-inline-flex">
+                <ul class="text-body-tertiary list-inline m-0">
+                    <li class="list-inline-item">
+                        <i class="fa-solid fa-users"></i>
+                        ${list.meta.membercount} members
+                    </li>
+                    <li class="list-inline-item">
+                        <i class="fa-solid fa-sitemap"></i>
+                        ${list.meta.rolecount} roles
+                    </li>
+                    <li class="list-inline-item">
+                        <i class="fa-solid fa-robot"></i>
+                        {{ construct8 }}
+                    </li>
+                    <li class="list-inline-item">
+                        <i class="fa-solid fa-clock"></i>
+                        ${(new Date(list.meta.lastModified)).toLocaleTimeString('en-us', dateOptions)}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    `;
 
-    const errorMessage =
-        `
-            <i class="fa-solid fa-triangle-exclamation"></i> Unfortunately {{ construct8 }} is unreachable at the moment. Please try again later. If this issue persists,
-            bring it to the attention of the community's leadership.
-        `;
+const errorMessage =
+    `
+        <i class="fa-solid fa-triangle-exclamation"></i> Unfortunately {{ construct8 }} is unreachable at the moment. Please try again later. If this issue persists,
+        bring it to the attention of the community's leadership.
+    `;
 
-    fetch(url)
-        .then((resp) => resp.json())
-        .then((context) => {
-            document.getElementById('memberlist').innerHTML = template(context);
-            document.getElementById('memberlist-skeleton').style.display = 'none';
-            document.getElementById('memberlist').style.display = '';
-        })
-        .catch((error) => {
-            document.getElementById('memberlist').innerHTML = errorMessage;
-            document.getElementById('memberlist-skeleton').style.display = 'none';
-            document.getElementById('memberlist').style.display = '';
-        });
+fetch(url)
+    .then((resp) => resp.json())
+    .then((context) => {
+        document.getElementById('memberlist').innerHTML = template(context);
+        document.getElementById('memberlist-skeleton').style.display = 'none';
+        document.getElementById('memberlist').style.display = '';
+    })
+    .catch((error) => {
+        document.getElementById('memberlist').innerHTML = errorMessage;
+        document.getElementById('memberlist-skeleton').style.display = 'none';
+        document.getElementById('memberlist').style.display = '';
+    });
 </script>
