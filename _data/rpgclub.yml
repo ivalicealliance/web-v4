@@ -1,4 +1,8 @@
 ---
+- name: Super Mariomon
+  date:
+    release: 2025-04-01
+    select: 2025-05-01
 - name: "PokeRogue"
   date: 
     release: 2024-03-22
