@@ -4,15 +4,15 @@
     release: 2025-04-01
     select: 2025-05-01
 - name: "PokeRogue"
-  date: 
+  date:
     release: 2024-03-22
     select: 2025-04-01
 - name: "Final Fantasy VII Rebirth"
-  date: 
+  date:
     release: 2024-02-29
     select: 2025-02-01
 - name: "Metaphor: ReFantazio"
-  date: 
+  date:
     release: 2024-10-11
     select: 2024-11-01
 - name: Final Fantasy XVI Complete Edition
