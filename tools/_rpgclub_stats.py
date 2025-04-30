@@ -41,14 +41,18 @@ def calculate_games_per_decade(games_data):
 def convert_duration(days):
     """Convert a duration in days to a human-readable string (years, months, days)."""
     abs_days = abs(days)
+    sign = '-' if days < 0 else ''
     if abs_days >= 365:
         years = abs_days // 365
-        return f"{'-' if days < 0 else ''}{years} years"
+        unit = "year" if years == 1 else "years"
+        return f"{sign}{years} {unit}"
     elif abs_days >= 30:
         months = abs_days // 30
-        return f"{'-' if days < 0 else ''}{months} months"
+        unit = "month" if months == 1 else "months"
+        return f"{sign}{months} {unit}"
     else:
-        return f"{'-' if days < 0 else ''}{abs_days} days"
+        unit = "day" if abs_days == 1 else "days"
+        return f"{sign}{abs_days} {unit}"
 
 def get_median(sorted_list):
     """Return the median element from a sorted list."""
