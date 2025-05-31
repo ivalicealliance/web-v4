@@ -1,4 +1,8 @@
 ---
+- name: "Fantasy Life i: The Girl Who Steals Time"
+  date:
+    release: 2025-05-21
+    select: 2025-06-01
 - name: Super Mariomon
   date:
     release: 2025-04-01
