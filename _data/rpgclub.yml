@@ -1,4 +1,8 @@
 ---
+- name: "The Legend of Zelda: Breath of the Wild"
+  date:
+    release: 2017-03-03
+    select: 2025-07-01
 - name: "Fantasy Life i: The Girl Who Steals Time"
   date:
     release: 2025-05-21
