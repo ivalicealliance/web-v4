@@ -1,4 +1,8 @@
 ---
+- name: "The Legend of Zelda: Dungeons of Infinity"
+  date:
+    release: 2024-09-05
+    select: 2025-08-01
 - name: "The Legend of Zelda: Breath of the Wild"
   date:
     release: 2017-03-03
