@@ -1,4 +1,8 @@
 ---
+- name: "Ogre Battle: The March of the Black Queen"
+  date:
+    release: 1993-03-12
+    select: 2025-09-01
 - name: "The Legend of Zelda: Dungeons of Infinity"
   date:
     release: 2024-09-05
