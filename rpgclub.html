@@ -5,12 +5,22 @@ description: A book club for RPGs where members vote on a game to play each mont
 icon: rpgclub
 ---
 
+<div class="alert alert-info" role="alert">
+  <p class="mb-0">
+    The RPG Club has concluded its journey, with the current chapter serving as the final selection. This page remains as 
+    a historical record of the games we explored together, the discussions we shared, and the community that formed around
+    our shared passion for role playing games. The chronicle below preserves the complete timeline of our monthly 
+    selections, from the first game to the last, capturing a meaningful period of collaborative gaming and discovery.
+  </p>
+</div>
+
+<hr class="my-4">
+
 <p>
   RPG Club is a community event that operates like a club for role playing games (RPGs). Near the end of each month, our
   group nominates and votes on games for future play. The game selected for the current month automatically carries over
   to the next poll, allowing it to be played for multiple months.
 </p>
-
 
 <p>
   Throughout the event, participants are encouraged to play and discuss the selected game while sharing their favorite
@@ -24,7 +34,7 @@ icon: rpgclub
   genre!
 </p>
 
-<h3 class="fw-light mt-4">Current Chapter</h3>
+<h3 class="fw-light mt-4">Final Chapter</h3>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   {% assign current_card = site.data.rpgclub[0] %}
   {% include club_card.html card=current_card %}
