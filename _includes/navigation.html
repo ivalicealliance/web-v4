@@ -13,7 +13,7 @@
           {% assign element = element_pair[1] %}
           {% if element.external %}
             {% assign nav_link = element.external | replace: '!discord', site.discord %}
-            {% assign target = ' target="_blank"' %}
+            {% assign target = ' target="_blank" rel="noopener noreferrer"' %}
           {% else %}
             {% assign nav_link = site.baseurl | append: '/' | append: element.link %}
             {% assign target = nil %}
