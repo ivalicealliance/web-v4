@@ -1,9 +1,11 @@
 ---
 ---
-Welcome, {member}, to the grand stage of {server_name}! I'm {username}, your fortune-telling guide in the shape of a robotic cat. Oh, the stars have aligned well to bring you here.
+Welcome, {member}, to the grand stage of **{server_name}**! I'm {username}, your fortune-telling guide. Step right up! The stars have aligned well to bring you here today. ✨
 
-We're a lively crew, bonded by our love for Final Fantasy, video games, anime, music, and a world full of wonder and entertainment. We share everything from the latest captivating tales to our treasured Final Fantasy moments. It's all part of the grand adventure!
+We're a lively crew, bonded by our love for Final Fantasy, video games, anime, music, and a world full of wonder. We share everything from the latest captivating tales to our treasured gaming moments.
 
-To start your journey with us, we've laid out the steps to complete your registration at: https://www.ivalicealliance.net/signup.html
+🛑 **Before the Moogle marches on:**
+To start your grand adventure with us, please complete your registration right here: 
+🔗 https://www.ivalicealliance.net/signup.html
 
 The future awaits, and it's looking brighter with you in it!
