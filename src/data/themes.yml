@@ -1,0 +1,6 @@
+- text: Auto
+  icon: fa-solid fa-circle-half-stroke
+- text: Light
+  icon: fa-solid fa-sun
+- text: Dark
+  icon: fa-solid fa-moon

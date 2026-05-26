@@ -1,7 +1,7 @@
 import yaml
 from datetime import datetime, timedelta
 
-def load_games_data(filepath='_data/rpgclub.yml'):
+def load_games_data(filepath='src/data/rpgclub.yml'):
     """Load games data from a YAML file."""
     with open(filepath) as file:
         return yaml.safe_load(file)
@@ -94,7 +94,7 @@ def prepare_stats_data(differences_sorted, games_per_decade, games_data):
         }
     }
 
-def write_stats_to_yaml(stats_data, filepath='_data/stats.yml'):
+def write_stats_to_yaml(stats_data, filepath='src/data/stats.yml'):
     """Write the statistics dictionary to a YAML file."""
     with open(filepath, 'w') as file:
         yaml.dump(stats_data, file, default_flow_style=False)

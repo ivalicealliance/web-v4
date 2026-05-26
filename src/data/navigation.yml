@@ -1,0 +1,22 @@
+# Internal
+home:
+  text: Home
+  icon: fa-solid fa-chess-rook
+  link: index.html
+signup:
+  text: Signup
+  icon: fa-solid fa-user-plus
+  link: signup.html
+members:
+  text: Members
+  icon: fa-solid fa-users
+  link: members.html
+rpgclub:
+  text: RPG Club
+  icon: fa-solid fa-tv
+  link: rpgclub.html
+# External 
+discord:
+  text: Discord
+  icon: fa-brands fa-discord
+  external: '!discord'
