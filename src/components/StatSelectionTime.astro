@@ -1,0 +1,77 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+
+// Load stats data
+const stats = yaml.load(fs.readFileSync('src/data/stats.yml', 'utf8')) as Record<string, any>;
+
+// Helper to slugify titles for linking
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+const shortestDuration = stats.shortest_time_to_selection.duration;
+const isAhead = shortestDuration.includes('-');
+const cleanShortestDuration = isAhead ? `Ahead by ${shortestDuration.replace('-', '')}` : shortestDuration;
+---
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Stat</th>
+      <th scope="col">Value</th>
+      <th scope="col">Game</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Average Selection Time</td>
+      <td>{stats.average_duration}</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Median Selection Time</td>
+      <td>{stats.median_game.duration}</td>
+      <td>
+        <a href={`#${slugify(stats.median_game.title)}`} class="game-link text-decoration-none">
+          {stats.median_game.title}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Longest Selection Time</td>
+      <td>{stats.longest_time_to_selection.duration}</td>
+      <td>
+        <a href={`#${slugify(stats.longest_time_to_selection.title)}`} class="game-link text-decoration-none">
+          {stats.longest_time_to_selection.title}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Shortest Selection Time</td>
+      <td>{cleanShortestDuration}</td>
+      <td>
+        <a href={`#${slugify(stats.shortest_time_to_selection.title)}`} class="game-link text-decoration-none">
+          {stats.shortest_time_to_selection.title}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Longest Streak</td>
+      <td>{stats.longest_streak.value}</td>
+      <td>
+        <a href={`#${slugify(stats.longest_streak.title)}`} class="game-link text-decoration-none">
+          {stats.longest_streak.title}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

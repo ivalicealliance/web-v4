@@ -1,0 +1,62 @@
+---
+interface Props {
+  card: {
+    name: string;
+    date: {
+      select: Date | string;
+      release: Date | string;
+    };
+  };
+}
+
+const { card } = Astro.props;
+
+// Helper to slugify game names
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start
+    .replace(/-+$/, '');            // Trim - from end
+};
+
+// Helper to format dates (e.g. September 1, 2025)
+const formatDate = (dateVal: Date | string) => {
+  // Check if it's already a Date object
+  const dateObj = dateVal instanceof Date ? dateVal : new Date(dateVal);
+  
+  // Format as "Month Day, Year" in UTC to prevent timezone offset shifts
+  const utcDate = new Date(dateObj.getTime() + dateObj.getTimezoneOffset() * 60000);
+  return utcDate.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+
+const slug = slugify(card.name);
+---
+
+<div class="col" id={slug}>
+  <div class="card rounded-5 shadow-sm" style="overflow: hidden;">
+    <div class="ratio ratio-1x1">
+      <img
+        src={`/assets/covers/${slug}.jpg`}
+        class="card-img-top"
+        alt={card.name}
+        loading="lazy"
+      />
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{card.name}</h5>
+      <h6 class="fw-light">Selected</h6>
+      <p class="card-text">{formatDate(card.date.select)}</p>
+      <h6 class="fw-light">Released</h6>
+      <p class="card-text">{formatDate(card.date.release)}</p>
+    </div>
+  </div>
+</div>

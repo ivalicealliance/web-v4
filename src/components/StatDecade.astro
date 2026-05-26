@@ -1,0 +1,31 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+
+// Load stats data
+const stats = yaml.load(fs.readFileSync('src/data/stats.yml', 'utf8')) as Record<string, any>;
+
+// Sort decade entries numerically to guarantee order
+const gamesPerDecade = Object.entries(stats.games_per_decade || {}).sort(
+  (a, b) => Number(a[0]) - Number(b[0])
+);
+---
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Decade</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      gamesPerDecade.map(([decade, count]) => (
+        <tr>
+          <td>{decade}s</td>
+          <td>{count}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
