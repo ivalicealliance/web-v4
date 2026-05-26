@@ -13,15 +13,11 @@ const themes = yaml.load(fs.readFileSync('src/data/themes.yml', 'utf8')) as Arra
 // Helper to determine active state
 const currentPath = Astro.url.pathname;
 const isActive = (link: string) => {
-  // Convert links like 'index.html' -> '/' and 'signup.html' -> '/signup'
-  let target = link === 'index.html' ? '/' : '/' + link.replace('.html', '');
-  
-  if (target === '/') {
-    return currentPath === '/' || currentPath === '';
+  let target = '/' + link;
+  if (link === 'index.html') {
+    return currentPath === '/' || currentPath === '' || currentPath === '/index.html';
   }
-  
-  // Handle matching with or without trailing slashes
-  return currentPath.replace(/\/$/, '') === target;
+  return currentPath === target;
 };
 ---
 
@@ -54,7 +50,7 @@ const isActive = (link: string) => {
               target = "_blank";
               rel = "noopener noreferrer";
             } else {
-              navLink = element.link === 'index.html' ? '/' : '/' + element.link.replace('.html', '');
+              navLink = element.link === 'index.html' ? '/' : '/' + element.link;
             }
 
             const active = !element.external && isActive(element.link);
