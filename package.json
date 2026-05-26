@@ -1,0 +1,21 @@
+{
+  "name": "ivalice-alliance-web",
+  "version": "5.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.8.0",
+    "js-yaml": "^4.1.0",
+    "sass": "^1.77.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.4.0"
+  }
+}
