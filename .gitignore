@@ -161,7 +161,7 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-_data/stats.yml
+src/data/stats.yml
 
 # Astro
 .astro/
