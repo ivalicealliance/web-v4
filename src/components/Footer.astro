@@ -1,0 +1,29 @@
+---
+const siteTitle = "Ivalice Alliance";
+const siteYear = 2008;
+const currentYear = new Date().getFullYear();
+const githubUsername = "ivalicealliance";
+---
+
+<footer class="text-center">
+  <div class="d-inline-flex my-sm-5 my-4 p-4 border rounded-5 shadow-sm">
+    <ul class="text-body-tertiary list-inline m-0">
+      <li class="list-inline-item">
+        <i class="fa-regular fa-copyright"></i>
+        {siteTitle}
+        {siteYear}&ndash;{currentYear}
+      </li>
+      <li class="list-inline-item">
+        <a
+          href={`https://github.com/${githubUsername}/`}
+          class="link-secondary"
+          title="Contribute on GitHub"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fa-brands fa-github fa-xl fa-fw"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>

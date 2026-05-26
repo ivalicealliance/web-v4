@@ -1,0 +1,106 @@
+---
+import '../styles/main.scss';
+import Navigation from '../components/Navigation.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  hidden_title?: boolean;
+  icon?: string;
+  custom_icon?: string;
+}
+
+const {
+  title = "Ivalice Alliance",
+  description = "Join and embody your favorite character for engaging discussions on video games, anime, music, and more. Our small community fosters genuine camaraderie among members.",
+  keywords = "ivalice alliance, community, clan, gaming, final fantasy, xii, xiv",
+  hidden_title = false,
+  icon,
+  custom_icon,
+} = Astro.props;
+
+const siteTitle = "Ivalice Alliance";
+const displayTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{displayTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Balthier" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={displayTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://www.ivalicealliance.net" />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:image" content="/assets/images/logo.svg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:title" content={displayTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/assets/images/logo.svg" />
+
+    <!-- https://fonts.google.com/share?selection.family=Open%20Sans:ital,wght@0,300;0,400;0,700;1,400;1,700%7CRaleway:wght@300;400;500;700 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400;1,700&family=Raleway:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha256-PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g="
+      crossorigin="anonymous"
+    />
+
+    <link rel="shortcut icon" href="/assets/images/favicon.png" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+
+    <!-- Color Mode Toggler Script (Inline/Blocking to avoid FOUC) -->
+    <script is:inline src="/js/theme.js"></script>
+  </head>
+
+  <body>
+    <Navigation />
+    <div class="container container-narrow">
+      <Header title={title} hidden_title={hidden_title} icon={icon} custom_icon={custom_icon} />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw="
+      crossorigin="anonymous"></script>
+
+    <!-- FontAwesome & Google Analytics -->
+    <script src="https://kit.fontawesome.com/626b1a7cf8.js" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZH1JPJKYCP"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-ZH1JPJKYCP');
+    </script>
+  </body>
+</html>

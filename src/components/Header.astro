@@ -1,0 +1,37 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+
+interface Props {
+  title?: string;
+  hidden_title?: boolean;
+  icon?: string;
+  custom_icon?: string;
+}
+
+const { title, hidden_title = false, icon, custom_icon } = Astro.props;
+
+// Parse navigation to resolve standard page icons
+const navigation = yaml.load(fs.readFileSync('src/data/navigation.yml', 'utf8')) as Record<string, any>;
+
+let resolvedIcon = "";
+if (icon && navigation[icon]) {
+  resolvedIcon = navigation[icon].icon;
+} else if (custom_icon) {
+  resolvedIcon = custom_icon;
+}
+---
+
+<header>
+  {
+    !hidden_title && (
+      <h1 class="text-center fw-bolder display-5 m-0 py-sm-5 py-4">
+        <span class="header-gradient" style="display: inline-block;">
+          {resolvedIcon && <i class={`${resolvedIcon}`} />}
+          {resolvedIcon && " "}
+          {title}
+        </span>
+      </h1>
+    )
+  }
+</header>

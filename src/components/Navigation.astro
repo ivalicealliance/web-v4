@@ -1,0 +1,124 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+
+// Load site configuration and data
+const siteTitle = "Ivalice Alliance";
+const siteDiscord = "https://discord.gg/TEVk6n5";
+
+// Parse YAML files
+const navigation = yaml.load(fs.readFileSync('src/data/navigation.yml', 'utf8')) as Record<string, any>;
+const themes = yaml.load(fs.readFileSync('src/data/themes.yml', 'utf8')) as Array<{ text: string; icon: string }>;
+
+// Helper to determine active state
+const currentPath = Astro.url.pathname;
+const isActive = (link: string) => {
+  // Convert links like 'index.html' -> '/' and 'signup.html' -> '/signup'
+  let target = link === 'index.html' ? '/' : '/' + link.replace('.html', '');
+  
+  if (target === '/') {
+    return currentPath === '/' || currentPath === '';
+  }
+  
+  // Handle matching with or without trailing slashes
+  return currentPath.replace(/\/$/, '') === target;
+};
+---
+
+<nav class="navbar navbar-expand-lg p-0">
+  <div class="container-xl p-4 border border-top-0 rounded-bottom-5 shadow-sm">
+    <a class="navbar-brand" href="/">
+      <h2 class="d-inline">{siteTitle}</h2>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#naviar_id"
+      aria-controls="naviar_id"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="naviar_id">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        {
+          Object.entries(navigation).map(([key, element]) => {
+            let navLink = "";
+            let target = null;
+            let rel = null;
+
+            if (element.external) {
+              navLink = element.external.replace('!discord', siteDiscord);
+              target = "_blank";
+              rel = "noopener noreferrer";
+            } else {
+              navLink = element.link === 'index.html' ? '/' : '/' + element.link.replace('.html', '');
+            }
+
+            const active = !element.external && isActive(element.link);
+
+            return (
+              <li class="nav-item">
+                <a
+                  class={`nav-link${active ? " active" : ""}`}
+                  aria-current={active ? "page" : undefined}
+                  href={navLink}
+                  target={target}
+                  rel={rel}
+                >
+                  <i class={`${element.icon} fa-fw`} />
+                  <span class="ps-2">{element.text}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+      
+      <!-- Theme Selection Dropdown -->
+      <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span id="theme-icon-active"></span>
+            <span class="d-md-none ms-1">Change theme</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="--bs-dropdown-min-width: 8rem;">
+            {
+              themes.map((element) => {
+                const themeValue = element.text.toLowerCase();
+                return (
+                  <li>
+                    <button
+                      type="button"
+                      class="dropdown-item d-flex align-items-center"
+                      data-bs-theme-value={themeValue}
+                    >
+                      <span class="me-2 opacity-50" id={`theme-icon-${themeValue}`}>
+                        <i class={`${element.icon} fa-fw`} />
+                      </span>
+                      {element.text}
+                      <span
+                        class="theme-selected-indicator selected ms-auto d-none"
+                        id={`theme-selected-${themeValue}`}
+                      >
+                        <i class="fas fa-check fa-fw" />
+                      </span>
+                    </button>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
