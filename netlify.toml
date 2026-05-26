@@ -1,0 +1,3 @@
+[build]
+  command = "python3 tools/_rpgclub_stats.py && npm run build"
+  publish = "dist"
