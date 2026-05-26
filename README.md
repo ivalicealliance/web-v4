@@ -1,52 +1,65 @@
 # ivalicealliance.net
 
 ## Abstract
-An open source website for [Ivalice Alliance](https://www.ivalicealliance.net) built using [Bootstrap](https://getbootstrap.com/), [Dart Sass](https://sass-lang.com/dart-sass), and [Jekyll](https://jekyllrb.com/).
+An open source website for [Ivalice Alliance](https://www.ivalicealliance.net) built using [Bootstrap](https://getbootstrap.com/), [Sass](https://sass-lang.com/), and [Astro 6.3](https://astro.build/).
+
+## Codebase Structure
+*   `src/pages/` — All website pages (e.g. `index.astro`, `signup.astro`, `members.astro`, `rpgclub.astro`, `agreement.astro`). 
+*   `src/components/` — Reusable website UI elements (e.g. `Navigation.astro`, `ClubCard.astro`, `StatSelectionTime.astro`).
+*   `src/layouts/` — Global page wrap layout (`Layout.astro`).
+*   `src/styles/` — Core stylesheet (`main.scss`).
+*   `src/data/` — Site config and datasets (`navigation.yml`, `stats.yml`, `rpgclub.yml`, `themes.yml`).
+*   `public/` — Static assets and global theme scripts (served directly in the build root).
 
 ## Editing
-Edit any HTML or Markdown files. When your changes land on `main`, it will automatically build a new version of the site. The changes will normally be visible within a minute. 
-
-You can also create new files. HTML files can go where it makes most sense (usually root folder)
+Edit the pages inside `src/pages/` or the data configurations inside `src/data/`. When your changes land on `main`, Netlify will automatically build and deploy a new version of the site.
 
 ## Building Locally
+
 ### Requirements
-- Python 3
-- Ruby
-- Sass compiler ([Dart Sass](https://sass-lang.com/dart-sass))
+- **Node.js** (v18.14.1 or higher)
+- **Python 3** (only required if generating game stats)
 
 ### Installation
-Run these commands once in your git folder to install Ruby dependencies:
+Run this command once in your project folder to install dependencies:
 
 ```bash
-bundle install
+npm install
 ```
 
-For Python dependencies, run:
+For Python statistics dependencies, run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Building
-When you are ready to build the site, you should run these commands. 
+### Developing & Running
+To spin up a local development server with hot-reloading (updates your browser instantly on save), run:
 
-To create or update statistics, run the stats generator:
+```bash
+npm run dev
+```
+The terminal will provide a local server address, typically [http://localhost:4321](http://localhost:4321).
+
+### Stats Generation
+To update the club card stats dynamically, run the stats generator:
 
 ```bash
 python3 tools/_rpgclub_stats.py
 ```
 
-If you're planning to make content changes, build the site and watch:
+### Building & Previewing Production
+To compile a production-ready static build of the site into the `dist/` directory, run:
+
 ```bash
-bundle exec jekyll serve --watch
+npm run build
 ```
 
-If you're planning to make SCSS changes, compile `sass` and watch:
-```bash
-> sass _scss/main.scss css/main.css --no-source-map --watch
-```
+To preview the statically compiled production build locally, run:
 
-Any changes saved will make `Jekyll` build the site locally. The terminal will provide a local server address, typically [localhost:4000](http://localhost:4000).
+```bash
+npm run preview
+```
 
 ## Contributing
 1. Fork it
