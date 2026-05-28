@@ -45,7 +45,7 @@ The terminal will provide a local server address, typically [http://localhost:43
 To update the club card stats dynamically, run the stats generator:
 
 ```bash
-python3 tools/_rpgclub_stats.py
+python3 scripts/_rpgclub_stats.py
 ```
 
 ### Building & Previewing Production
