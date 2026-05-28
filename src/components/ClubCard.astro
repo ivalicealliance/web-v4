@@ -1,4 +1,5 @@
 ---
+import { slugify } from '../utils/slugify';
 interface Props {
   card: {
     name: string;
@@ -10,15 +11,6 @@ interface Props {
 }
 
 const { card } = Astro.props;
-
-// Helper to slugify game names
-const slugify = (text: string) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{M}\p{Nd}]+/gu, '-') // Replace non-alphanumeric/marks with -
-    .replace(/^-+|-+$/g, '');       // Trim - from start and end
-};
 
 // Helper to format dates (e.g. September 1, 2025)
 const formatDate = (dateVal: Date | string) => {

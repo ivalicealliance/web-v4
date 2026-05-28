@@ -1,18 +1,10 @@
 ---
 import fs from 'node:fs';
 import yaml from 'js-yaml';
+import { slugify } from '../utils/slugify';
 
 // Load stats data
 const stats = yaml.load(fs.readFileSync('src/data/stats.yml', 'utf8')) as Record<string, any>;
-
-// Helper to slugify titles for linking
-const slugify = (text: string) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{M}\p{Nd}]+/gu, '-') // Replace non-alphanumeric/marks with -
-    .replace(/^-+|-+$/g, '');       // Trim - from start and end
-};
 
 const shortestDuration = stats.shortest_time_to_selection.duration;
 const isAhead = shortestDuration.includes('-');
