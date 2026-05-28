@@ -10,12 +10,8 @@ const slugify = (text: string) => {
   return text
     .toString()
     .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
+    .replace(/[^\p{L}\p{M}\p{Nd}]+/gu, '-') // Replace non-alphanumeric/marks with -
+    .replace(/^-+|-+$/g, '');       // Trim - from start and end
 };
 
 const shortestDuration = stats.shortest_time_to_selection.duration;
