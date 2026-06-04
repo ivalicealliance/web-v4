@@ -1,0 +1,298 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Logo Imprint"
+  description="Export official community logo assets in high resolution to create custom swag, wallpapers, or digital designs."
+  custom_icon="fa-solid fa-stamp"
+>
+  <div class="row g-4 mb-5">
+    <!-- Controls Panel -->
+    <div class="col-lg-5">
+      <div class="card border-0 bg-body-tertiary rounded-5 shadow-sm p-4 p-md-5 h-100">
+        <h4 class="fw-semibold mb-4 text-center text-lg-start">Alignment & Mask Options</h4>
+
+        <!-- Toggles -->
+        <div class="mb-4">
+          <label class="form-label small fw-medium d-block mb-2">Guide Lines</label>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="toggle-guide-cross" checked />
+            <label class="form-check-label small" for="toggle-guide-cross">Center Crosshair Lines (Red)</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="toggle-guide-circle" checked />
+            <label class="form-check-label small" for="toggle-guide-circle">Circle Boundary Guide (Blue)</label>
+          </div>
+        </div>
+
+        <!-- Mask Selection -->
+        <div class="mb-4">
+          <label for="logo-mask" class="form-label small fw-medium">Color Mask / Filter</label>
+          <select class="form-select rounded-3" id="logo-mask">
+            <option value="silhouette-black" selected>Silhouette (Solid Black)</option>
+            <option value="silhouette-white">Negative (Solid White)</option>
+            <option value="brand-gradient">Brand Gradient (Coral &rarr; Ultramarine)</option>
+            <option value="original">Original SVG Colors</option>
+          </select>
+        </div>
+
+        <!-- Export Resolution Selection -->
+        <div class="mb-4">
+          <label for="export-resolution" class="form-label small fw-medium">Export Resolution (Square)</label>
+          <select class="form-select rounded-3" id="export-resolution">
+            <option value="4000">4000 x 4000 px (Ultra High-Res)</option>
+            <option value="2048">2048 x 2048 px (High-Res)</option>
+            <option value="1024">1024 x 1024 px (Standard)</option>
+            <option value="512">512 x 512 px (Avatar Size)</option>
+          </select>
+        </div>
+
+        <!-- Action Export Button -->
+        <div class="d-grid mt-4">
+          <button type="button" class="btn btn-primary rounded-pill py-3 fw-medium" id="export-btn">
+            <i class="fa-solid fa-file-export me-2"></i>Export Logo PNG
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Preview Canvas -->
+    <div class="col-lg-7">
+      <div class="card border-0 bg-body-tertiary rounded-5 shadow-sm p-4 p-md-5 h-100 text-center d-flex flex-column align-items-center justify-content-center">
+        <h4 class="fw-semibold mb-4">Canvas Preview</h4>
+
+        <!-- Logo Canvas Wrap (Transparency Checkerboard Background) -->
+        <div class="logo-preview-container shadow-lg rounded-5 overflow-hidden border mb-4">
+          <div class="logo-canvas-inner" id="canvas-inner-view">
+            <!-- Overlay Guides -->
+            <div class="guide-x" id="guide-x-elem"></div>
+            <div class="guide-y" id="guide-y-elem"></div>
+            <div class="circle-guide" id="guide-circle-elem"></div>
+            
+            <!-- Target Image -->
+            <img src="/assets/images/logo.svg" alt="Logo" class="logo-img" id="source-logo-img" />
+          </div>
+        </div>
+        
+        <div class="text-body-secondary small">
+          <i class="fa-solid fa-info-circle me-1"></i> Previews show visual guides. Downloaded assets will have a transparent background and no overlay lines.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-5">
+    <a href="/tools.html" class="btn btn-outline-secondary rounded-pill">
+      <i class="fa-solid fa-chevron-left me-1"></i> Back to Tools
+    </a>
+  </div>
+
+  <style>
+    /* Transparency Checkerboard Pattern */
+    .logo-preview-container {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1/1;
+      margin: 0 auto;
+      position: relative;
+      background-color: var(--bs-body-bg);
+      background-image: 
+        linear-gradient(45deg, var(--bs-tertiary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--bs-tertiary-bg) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, var(--bs-tertiary-bg) 75%), 
+        linear-gradient(-45deg, transparent 75%, var(--bs-tertiary-bg) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+
+    .logo-canvas-inner {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      position: relative;
+    }
+
+    .guide-x {
+      width: 2px;
+      height: 100%;
+      background: var(--bs-danger);
+      opacity: 0.4;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+    }
+
+    .guide-y {
+      width: 100%;
+      height: 2px;
+      background: var(--bs-danger);
+      opacity: 0.4;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      align-self: center;
+    }
+
+    .circle-guide {
+      width: 75%;
+      height: 75%;
+      border-radius: 50%;
+      border: 2px dashed var(--bs-primary);
+      opacity: 0.5;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+      align-self: center;
+      pointer-events: none;
+    }
+
+    .logo-img {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      display: block;
+      z-index: 1;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+      align-self: center;
+      transition: filter 0.2s ease;
+    }
+
+    /* Style Filters */
+    .logo-img.silhouette-black {
+      filter: brightness(0) saturate(100%);
+    }
+
+    .logo-img.silhouette-white {
+      filter: brightness(0) invert(1);
+    }
+
+    /* Gradient filter representation in HTML */
+    .logo-img.brand-gradient {
+      /* Dynamic gradient mask visual approximation */
+      filter: drop-shadow(0px 0px 0px transparent);
+      /* Modern SVG tint workaround in CSS */
+      background: linear-gradient(to bottom right, var(--gradient-start, #FF6F61), var(--gradient-end, #5B7EBD));
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+      mask-image: url('/assets/images/logo.svg');
+      -webkit-mask-image: url('/assets/images/logo.svg');
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+      width: 75%;
+      height: 75%;
+      object-position: -9999px -9999px; /* Hide actual image pixels, show mask background */
+    }
+
+    .logo-img.original {
+      filter: none;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleCross = document.getElementById('toggle-guide-cross');
+      const toggleCircle = document.getElementById('toggle-guide-circle');
+      const maskSelect = document.getElementById('logo-mask');
+      const resolutionSelect = document.getElementById('export-resolution');
+      const exportBtn = document.getElementById('export-btn');
+      
+      const guideX = document.getElementById('guide-x-elem');
+      const guideY = document.getElementById('guide-y-elem');
+      const guideCircle = document.getElementById('guide-circle-elem');
+      const logoImg = document.getElementById('source-logo-img');
+
+      // Update Guide visibility
+      function updateGuides() {
+        guideX.style.display = toggleCross.checked ? 'block' : 'none';
+        guideY.style.display = toggleCross.checked ? 'block' : 'none';
+        guideCircle.style.display = toggleCircle.checked ? 'block' : 'none';
+      }
+
+      // Update Logo Mask Visual filter style class
+      function updateMask() {
+        logoImg.className = 'logo-img'; // Reset
+        const mask = maskSelect.value;
+        logoImg.classList.add(mask);
+      }
+
+      toggleCross.addEventListener('change', updateGuides);
+      toggleCircle.addEventListener('change', updateGuides);
+      maskSelect.addEventListener('change', updateMask);
+
+      // Perform PNG Canvas draw and export
+      exportBtn.addEventListener('click', () => {
+        const size = parseInt(resolutionSelect.value, 10);
+        const maskMode = maskSelect.value;
+
+        // Create heavy resolution canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // Draw image onto canvas
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = '/assets/images/logo.svg';
+
+        img.onload = () => {
+          ctx.save();
+
+          if (maskMode === 'silhouette-black') {
+            // Silhouette Black Draw
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+          } else if (maskMode === 'silhouette-white') {
+            // Silhouette White Draw
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, size, size);
+          } else if (maskMode === 'brand-gradient') {
+            // Brand Gradient Draw
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            
+            // Generate canvas gradient Coral (#FF6F61) to Ultramarine (#5B7EBD)
+            const grad = ctx.createLinearGradient(0, 0, size, size);
+            grad.addColorStop(0, '#FF6F61');
+            grad.addColorStop(1, '#5B7EBD');
+            
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, size, size);
+          } else {
+            // Original SVG draw
+            ctx.drawImage(img, 0, 0, size, size);
+          }
+
+          ctx.restore();
+
+          // Export PNG download trigger
+          const pngUrl = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = pngUrl;
+          link.download = `logo-imprint-${maskMode}-${size}x${size}.png`;
+          link.click();
+        };
+      });
+
+      // Initial configuration Setup
+      updateGuides();
+      updateMask();
+    });
+  </script>
+</Layout>
