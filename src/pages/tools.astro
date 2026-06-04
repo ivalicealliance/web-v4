@@ -1,0 +1,230 @@
+---
+import fs from 'node:fs';
+import Layout from '../layouts/Layout.astro';
+
+// Load template from the txt file at build-time
+let initialTemplate = "";
+try {
+  initialTemplate = fs.readFileSync('public/tools/bot_welcome_message.txt', 'utf8');
+} catch (e) {
+  initialTemplate = `Welcome, {member}, to the grand stage of **{server_name}**! I'm {username}, your guide.`;
+}
+---
+
+<Layout
+  title="Tools"
+  description="Administration and developer utilities for the Ivalice Alliance community."
+  icon="tools"
+>
+  <p class="mb-5">
+    These utilities help you generate custom avatar placeholders, coordinate onboarding, or export 
+    high-resolution community assets to design your own custom swag and prints.
+  </p>
+
+  <!-- Interactive Tools Grid -->
+  <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+    <!-- Icon Generator Card -->
+    <div class="col">
+      <div class="card h-100 rounded-5 shadow-sm border-0 bg-body-tertiary transition-hover">
+        <div class="card-body p-4 d-flex flex-column">
+          <div class="d-flex align-items-center mb-3">
+            <div class="rounded-4 p-3 bg-primary bg-opacity-10 text-primary me-3">
+              <i class="fa-solid fa-wand-magic-sparkles fa-2x fa-fw"></i>
+            </div>
+            <h4 class="card-title m-0 fw-semibold">Icon Generator</h4>
+          </div>
+          <p class="card-text text-body-secondary flex-grow-1">
+            Generate and export custom, high-resolution avatar placeholders matching the clan's typography and color schemes. 
+            Useful for setting up mock members, service bots, or testing new color gradients.
+          </p>
+          <div class="mt-4">
+            <a href="/tools/icongen.html" class="btn btn-outline-primary rounded-pill px-4">
+              Launch Tool <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Imprint Card -->
+    <div class="col">
+      <div class="card h-100 rounded-5 shadow-sm border-0 bg-body-tertiary transition-hover">
+        <div class="card-body p-4 d-flex flex-column">
+          <div class="d-flex align-items-center mb-3">
+            <div class="rounded-4 p-3 bg-primary bg-opacity-10 text-primary me-3">
+              <i class="fa-solid fa-stamp fa-2x fa-fw"></i>
+            </div>
+            <h4 class="card-title m-0 fw-semibold">Logo Imprint</h4>
+          </div>
+          <p class="card-text text-body-secondary flex-grow-1">
+            Export the official community logo in custom sizes up to 4000x4000 pixels. 
+            Perfect for members making custom swag, T-shirts, stickers, or digital graphics. Features alignment guides and color masks.
+          </p>
+          <div class="mt-4">
+            <a href="/tools/imprint.html" class="btn btn-outline-primary rounded-pill px-4">
+              Launch Tool <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discord Onboarding Section -->
+  <div class="card rounded-5 shadow-sm border-0 bg-body-tertiary p-4 p-md-5 mb-4">
+    <div class="row align-items-center mb-4">
+      <div class="col-auto">
+        <div class="rounded-4 p-3 bg-info bg-opacity-10 text-info">
+          <i class="fa-brands fa-discord fa-2x fa-fw"></i>
+        </div>
+      </div>
+      <div class="col">
+        <h3 class="m-0 fw-semibold">Discord Welcome Message</h3>
+        <p class="text-body-secondary m-0">Onboarding welcome template for the server's welcoming bot.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Input Controls -->
+      <div class="col-lg-4">
+        <h5 class="fw-semibold mb-3">Live Parameters</h5>
+        <div class="mb-3">
+          <label for="welcome-member" class="form-label small fw-medium">Member Name (&#123;member&#125;)</label>
+          <input type="text" class="form-control rounded-3" id="welcome-member" value="Cloud" placeholder="e.g. Cloud" />
+        </div>
+        <div class="mb-3">
+          <label for="welcome-server" class="form-label small fw-medium">Server Name (&#123;server_name&#125;)</label>
+          <input type="text" class="form-control rounded-3" id="welcome-server" value="Ivalice Alliance" placeholder="e.g. Ivalice Alliance" />
+        </div>
+        <div class="mb-3">
+          <label for="welcome-username" class="form-label small fw-medium">Bot Name (&#123;username&#125;)</label>
+          <input type="text" class="form-control rounded-3" id="welcome-username" value="CaitSith" placeholder="e.g. CaitSith" />
+        </div>
+      </div>
+
+      <!-- Live Preview & Raw Code -->
+      <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="fw-semibold m-0">Output Preview</h5>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Copy options">
+            <button type="button" class="btn btn-secondary rounded-start-pill" id="btn-copy-interpolated">
+              <i class="fa-solid fa-copy me-1"></i> Copy Rendered
+            </button>
+            <button type="button" class="btn btn-outline-secondary rounded-end-pill" id="btn-copy-template">
+              <i class="fa-solid fa-code me-1"></i> Copy Template
+            </button>
+          </div>
+        </div>
+
+        <div class="position-relative">
+          <textarea 
+            class="form-control font-monospace text-body bg-body rounded-4 p-4" 
+            id="welcome-output" 
+            rows="9" 
+            readonly 
+            style="font-size: 0.9rem; resize: none; border: 1px solid var(--bs-border-color);"
+          ></textarea>
+          <div 
+            class="position-absolute top-50 start-50 translate-middle badge bg-success p-3 rounded-3 shadow d-none" 
+            id="copy-toast" 
+            style="font-size: 1rem; z-index: 10;"
+          >
+            <i class="fa-solid fa-check me-2"></i> Copied to clipboard!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom styles for tool card hover effects -->
+  <style>
+    .transition-hover {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .transition-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--bs-box-shadow) !important;
+    }
+  </style>
+
+  <!-- Interactive script to handle the Discord template interpolation and copy-to-clipboard -->
+  <script is:inline define:vars={{ initialTemplate }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      const memberInput = document.getElementById('welcome-member');
+      const serverInput = document.getElementById('welcome-server');
+      const usernameInput = document.getElementById('welcome-username');
+      const outputTextarea = document.getElementById('welcome-output');
+      const copyInterpolatedBtn = document.getElementById('btn-copy-interpolated');
+      const copyTemplateBtn = document.getElementById('btn-copy-template');
+      const copyToast = document.getElementById('copy-toast');
+
+      let templateText = initialTemplate;
+
+      function stripFrontmatter(text) {
+        if (!text) return '';
+        if (text.startsWith('---')) {
+          const parts = text.split('---');
+          if (parts.length >= 3) {
+            return parts.slice(2).join('---').trim();
+          }
+        }
+        return text.trim();
+      }
+
+      templateText = stripFrontmatter(templateText);
+
+      function renderTemplate() {
+        const member = memberInput.value || '';
+        const serverName = serverInput.value || '';
+        const username = usernameInput.value || '';
+        
+        let rendered = templateText
+          .replace(/{member}/g, member)
+          .replace(/{server_name}/g, serverName)
+          .replace(/{username}/g, username);
+
+        outputTextarea.value = rendered;
+      }
+
+      function showToast() {
+        copyToast.classList.remove('d-none');
+        setTimeout(() => {
+          copyToast.classList.add('d-none');
+        }, 1500);
+      }
+
+      memberInput.addEventListener('input', renderTemplate);
+      serverInput.addEventListener('input', renderTemplate);
+      usernameInput.addEventListener('input', renderTemplate);
+
+      copyInterpolatedBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(outputTextarea.value).then(() => {
+          showToast();
+        });
+      });
+
+      copyTemplateBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(templateText).then(() => {
+          showToast();
+        });
+      });
+
+      // Fetch dynamic updates at runtime from public file
+      fetch('/tools/bot_welcome_message.txt')
+        .then((res) => {
+          if (!res.ok) throw new Error('Network error');
+          return res.text();
+        })
+        .then((text) => {
+          templateText = stripFrontmatter(text);
+          renderTemplate();
+        })
+        .catch((err) => {
+          console.warn('Could not fetch runtime welcome template, falling back to build-time version.', err);
+        });
+
+      // Initial render
+      renderTemplate();
+    });
+  </script>
+</Layout>
