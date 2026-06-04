@@ -149,12 +149,6 @@ const isActive = (link: string, exact = true) => {
                         <i class={`${element.icon} fa-fw`} />
                       </span>
                       {element.text}
-                      <span
-                        class="theme-selected-indicator selected ms-auto d-none"
-                        id={`theme-selected-${themeValue}`}
-                      >
-                        <i class="fas fa-check fa-fw" />
-                      </span>
                     </button>
                   </li>
                 );
@@ -176,6 +170,10 @@ const isActive = (link: string, exact = true) => {
     background-color: transparent !important;
   }
   .dropdown-item-active:hover, .dropdown-item-active:focus {
+    color: var(--bs-primary) !important;
+  }
+  .dropdown-item-active .me-2 {
+    opacity: 1 !important;
     color: var(--bs-primary) !important;
   }
 </style>

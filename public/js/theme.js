@@ -60,22 +60,15 @@
       if (!activeThemeIcon) return; // Guard in case script runs before DOM is fully loaded or element doesn't exist
       const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
       if (!btnToActive) return;
-      const checkToShow = document.querySelector(`#theme-selected-${theme}`)
-      if (!checkToShow) return;
       const themeIconElem = document.querySelector(`#theme-icon-${theme}`)
       if (!themeIconElem) return;
       const svgOfActiveBtn = themeIconElem.innerHTML
       
       document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
-        element.classList.remove('active')
-      })
-
-      document.querySelectorAll('.theme-selected-indicator').forEach(element => {
-        element.classList.add('d-none')
+        element.classList.remove('dropdown-item-active')
       })
       
-      btnToActive.classList.add('active')
-      checkToShow.classList.remove('d-none')
+      btnToActive.classList.add('dropdown-item-active')
       activeThemeIcon.innerHTML = svgOfActiveBtn
     }
   
