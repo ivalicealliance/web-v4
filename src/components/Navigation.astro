@@ -12,12 +12,24 @@ const themes = yaml.load(fs.readFileSync('src/data/themes.yml', 'utf8')) as Arra
 
 // Helper to determine active state
 const currentPath = Astro.url.pathname;
-const isActive = (link: string) => {
-  let target = '/' + link;
-  if (link === 'index.html') {
-    return currentPath === '/' || currentPath === '' || currentPath === '/index.html';
+const isActive = (link: string, exact = true) => {
+  if (!link) return false;
+  const normalize = (path: string) => {
+    return path
+      .replace(/^\//, '')
+      .replace(/\/$/, '')
+      .replace(/\.html$/, '')
+      .replace(/index$/, '');
+  };
+  const normLink = normalize(link);
+  const normCurrent = normalize(currentPath);
+  if (normLink === '') {
+    return normCurrent === '';
   }
-  return currentPath === target;
+  if (exact) {
+    return normCurrent === normLink;
+  }
+  return normCurrent === normLink || normCurrent.startsWith(normLink + '/');
 };
 ---
 
@@ -41,6 +53,42 @@ const isActive = (link: string) => {
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         {
           Object.entries(navigation).map(([key, element]) => {
+            if (element.dropdown) {
+              const dropdownActive = element.dropdown.some((subItem: any) => isActive(subItem.link, true));
+              return (
+                <li class="nav-item dropdown">
+                  <a
+                    class={`nav-link dropdown-toggle${dropdownActive ? " active" : ""}`}
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class={`${element.icon} fa-fw`} />
+                    <span class="ps-2">{element.text}</span>
+                  </a>
+                  <ul class="dropdown-menu shadow-sm">
+                    {element.dropdown.map((subItem: any) => {
+                      const subActive = isActive(subItem.link, true);
+                      const subLink = '/' + subItem.link;
+                      return (
+                        <li>
+                          <a
+                            class={`dropdown-item d-flex align-items-center${subActive ? " dropdown-item-active" : ""}`}
+                            href={subLink}
+                            aria-current={subActive ? "page" : undefined}
+                          >
+                            <i class={`${subItem.icon} fa-fw me-2 ${subActive ? "text-primary" : "opacity-75"}`} />
+                            <span>{subItem.text}</span>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              );
+            }
+
             let navLink = "";
             let target = null;
             let rel = null;
@@ -53,7 +101,7 @@ const isActive = (link: string) => {
               navLink = element.link === 'index.html' ? '/' : '/' + element.link;
             }
 
-            const active = !element.external && isActive(element.link);
+            const active = !element.external && isActive(element.link, true);
 
             return (
               <li class="nav-item">
@@ -118,3 +166,16 @@ const isActive = (link: string) => {
     </div>
   </div>
 </nav>
+
+<style>
+  .dropdown-item-active {
+    color: var(--bs-primary) !important;
+    font-weight: 600;
+    border-left: 3px solid var(--bs-primary);
+    padding-left: calc(1rem - 3px) !important;
+    background-color: transparent !important;
+  }
+  .dropdown-item-active:hover, .dropdown-item-active:focus {
+    color: var(--bs-primary) !important;
+  }
+</style>
