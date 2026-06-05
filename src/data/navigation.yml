@@ -15,19 +15,19 @@ rpgclub:
   text: RPG Club
   icon: fa-solid fa-tv
   link: rpgclub.html
-tools:
-  text: Tools
-  icon: fa-solid fa-screwdriver-wrench
+resources:
+  text: Resources
+  icon: fa-solid fa-folder-open
   dropdown:
-    - text: Tools Hub
+    - text: Resources Hub
       icon: fa-solid fa-cubes
       link: tools.html
-    - text: Icon Generator
-      icon: fa-solid fa-wand-magic-sparkles
-      link: tools/icongen.html
     - text: Logo Imprint
       icon: fa-solid fa-stamp
       link: tools/imprint.html
+    - text: Icon Generator
+      icon: fa-solid fa-wand-magic-sparkles
+      link: tools/icongen.html
 # External 
 discord:
   text: Discord
