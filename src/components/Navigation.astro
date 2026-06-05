@@ -57,16 +57,15 @@ const isActive = (link: string, exact = true) => {
               const dropdownActive = element.dropdown.some((subItem: any) => isActive(subItem.link, true));
               return (
                 <li class="nav-item dropdown">
-                  <a
-                    class={`nav-link dropdown-toggle${dropdownActive ? " active" : ""}`}
-                    href="#"
-                    role="button"
+                  <button
+                    class={`nav-link dropdown-toggle bg-transparent border-0${dropdownActive ? " active" : ""}`}
+                    type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     <i class={`${element.icon} fa-fw`} />
                     <span class="ps-2">{element.text}</span>
-                  </a>
+                  </button>
                   <ul class="dropdown-menu shadow-sm">
                     {element.dropdown.map((subItem: any) => {
                       const subActive = isActive(subItem.link, true);
@@ -124,16 +123,16 @@ const isActive = (link: string, exact = true) => {
       <!-- Theme Selection Dropdown -->
       <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
+          <button
+            class="nav-link dropdown-toggle bg-transparent border-0"
+            type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            aria-label="Change theme"
           >
             <span id="theme-icon-active"></span>
             <span class="d-md-none ms-1">Change theme</span>
-          </a>
+          </button>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="--bs-dropdown-min-width: 8rem;">
             {
               themes.map((element) => {
