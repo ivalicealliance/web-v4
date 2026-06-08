@@ -14,8 +14,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .container-narrow {
-    /* max-width: 720px; */
     max-width: 960px;
+    --bs-gutter-x: 3rem; /* Increase horizontal padding to 1.5rem (24px) to match navbar and preserve grid alignment */
 }
 
 .pixelated {
