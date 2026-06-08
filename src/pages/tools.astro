@@ -22,7 +22,7 @@ try {
 
   <!-- Navigation Tab Bar -->
   <div class="text-center mb-5">
-    <div class="nav nav-pills custom-nav-pills d-inline-flex" id="resourcesTab" role="tablist">
+    <div class="nav nav-pills custom-nav-pills" id="resourcesTab" role="tablist">
       <button 
         class="nav-link active" 
         id="assets-tab" 
@@ -96,7 +96,7 @@ try {
                 <p class="small text-body-secondary mb-3">Scalable vector graphics logo file. Ideal for design software.</p>
               </div>
               <a href="/assets/images/logo.svg" download class="btn btn-sm btn-outline-secondary rounded-pill w-100">
-                Download SVG <i class="fa-solid fa-arrow-down ms-1"></i>
+                <i class="fa-solid fa-arrow-down me-1"></i> Download SVG
               </a>
             </div>
           </div>
@@ -113,7 +113,7 @@ try {
                 <p class="small text-body-secondary mb-3">Imprint with corrected optical alignment in PNG format.</p>
               </div>
               <a href="/assets/images/monochrome-imprint-centered.png" download class="btn btn-sm btn-outline-secondary rounded-pill w-100">
-                Download PNG <i class="fa-solid fa-arrow-down ms-1"></i>
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
               </a>
             </div>
           </div>
@@ -130,7 +130,7 @@ try {
                 <p class="small text-body-secondary mb-3">Cropped to the bounds of the horizontal design with zero margins.</p>
               </div>
               <a href="/assets/images/monochrome-imprint.png" download class="btn btn-sm btn-outline-secondary rounded-pill w-100">
-                Download PNG <i class="fa-solid fa-arrow-down ms-1"></i>
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
               </a>
             </div>
           </div>
@@ -147,7 +147,7 @@ try {
                 <p class="small text-body-secondary mb-3">Standard 32x32 pixel shortcut icon in PNG format.</p>
               </div>
               <a href="/assets/images/favicon.png" download class="btn btn-sm btn-outline-secondary rounded-pill w-100">
-                Download PNG <i class="fa-solid fa-arrow-down ms-1"></i>
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
               </a>
             </div>
           </div>
@@ -257,17 +257,27 @@ try {
       padding: 0.35rem;
       border-radius: 50rem;
       border: 1px solid var(--bs-border-color);
-      display: inline-flex;
+      display: flex;
+      width: max-content;
+      max-width: 100%;
+      margin: 0 auto;
+      flex-wrap: nowrap;
     }
     .custom-nav-pills .nav-link {
       color: var(--bs-secondary-color);
       border-radius: 50rem;
-      padding: 0.6rem 1.75rem;
       font-weight: 600;
-      font-size: 0.95rem;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       border: none;
       background: transparent;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      
+      flex: 1;
+      padding: 0.6rem clamp(0.5rem, 3vw - 0.25rem, 1.75rem);
+      font-size: clamp(0.85rem, 0.5vw + 0.75rem, 0.95rem);
     }
     .custom-nav-pills .nav-link.active {
       background: var(--bs-primary);
