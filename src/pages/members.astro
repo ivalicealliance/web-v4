@@ -13,8 +13,6 @@ const availableSprites = fs.existsSync(spritesDir)
       .map(file => file.replace('.png', '').toLowerCase())
   : [];
 
-const isDev = import.meta.env.DEV;
-
 // Configured skeleton card counts per role: [1, 3, 11, 11, 1]
 const skeletonRoles = [1, 3, 11, 11, 1];
 ---
@@ -58,9 +56,8 @@ const skeletonRoles = [1, 3, 11, 11, 1];
 
   <div
     id="memberlist-container"
-    data-url={isDev ? '/members.json' : `${construct8Url}/members.json`}
+    data-url={`${construct8Url}/members.json`}
     data-sprites={JSON.stringify(availableSprites)}
-    data-dev={isDev ? "true" : "false"}
   >
     <!-- Shimmer skeleton is rendered statically on the server to prevent FOUC / CLS -->
     <div id="memberlist-skeleton">
