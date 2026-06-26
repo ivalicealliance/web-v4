@@ -1,7 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const construct8Url = "https://us-central1-river-octagon-219300.cloudfunctions.net/construct8-v2";
+
+// Read all sprites from the public directory at build time
+const spritesDir = path.join(process.cwd(), 'public/assets/sprites/ffrk');
+const availableSprites = fs.existsSync(spritesDir)
+  ? fs.readdirSync(spritesDir)
+      .filter(file => file.endsWith('.png'))
+      .map(file => file.replace('.png', '').toLowerCase())
+  : [];
+
+const isDev = import.meta.env.DEV;
+
+// Configured skeleton card counts per role: [1, 3, 11, 11, 1]
+const skeletonRoles = [1, 3, 11, 11, 1];
 ---
 
 <Layout
@@ -9,7 +24,12 @@ const construct8Url = "https://us-central1-river-octagon-219300.cloudfunctions.n
   description="Complete list of all Members currently in the community."
   icon="members"
 >
-  <style is:inline>
+  <!-- Google Fonts: Prompt (600) for Canvas rendering, matching the Avatar Icon Generator -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
     .skeleton {
       background-color: var(--bs-secondary-bg-subtle);
       border-radius: 0.5rem;
@@ -36,168 +56,40 @@ const construct8Url = "https://us-central1-river-octagon-219300.cloudfunctions.n
     }
   </style>
 
-  <div id="memberlist-skeleton"></div>
-  <div id="memberlist" style="display:none"></div>
-
-  <script is:inline define:vars={{ construct8Url }}>
-    function skeletonBlock(tag, classes, inner = '') {
-      return `<${tag} class="${classes}">${inner}</${tag}>`;
-    }
-
-    function skeletonMemberCard() {
-      return skeletonBlock(
-        'div',
-        'col',
-        skeletonBlock(
-          'div',
-          'card rounded-5 shadow-sm position-relative overflow-hidden',
-          skeletonBlock('div', 'card-img-top p-3 pb-0 mx-auto', skeletonBlock('div', 'skeleton ratio ratio-1x1 rounded-5')) +
-            skeletonBlock('div', 'card-body text-center', skeletonBlock('div', 'skeleton h6 card-title fw-light w-75 w-md-50 mx-auto', '&nbsp;'))
-        )
-      );
-    }
-
-    function skeletonRoleBlock(memberCount) {
-      return skeletonBlock(
-        'div',
-        '',
-        skeletonBlock('div', 'skeleton h5 fw-light w-25', '&nbsp;') +
-          skeletonBlock(
-            'div',
-            'mb-4',
-            skeletonBlock(
-              'div',
-              'row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4',
-              Array(memberCount).fill('').map(skeletonMemberCard).join('')
-            )
-          )
-      );
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const skeletonHTML = [1, 3, 11, 11, 1].map(skeletonRoleBlock).join('');
-      const skeletonElem = document.getElementById('memberlist-skeleton');
-      if (skeletonElem) {
-        skeletonElem.innerHTML = skeletonHTML;
-      }
-    });
-
-    const url = `${construct8Url}/members.json`;
-    const avatarPlaceholder = 'https://ui-avatars.com/api/?length=2&size=256&background=random&name=';
-    const spritePath = '/assets/sprites/ffrk/';
-    const dateOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short'
-    };
-
-    const statuses = ['online', 'idle', 'dnd', 'offline'];
-    
-    const statusTemplate = (context) => {
-      if (context.presence && statuses.includes(context.presence.status)) {
-        return `<i class="fa-solid fa-user ${context.presence.status}" data-fa-transform="shrink-5"></i>`;
-      } else {
-        return ``;
-      }
-    };
-
-    const animationTemplate = (context) => {
-      if (context.presence && statuses.includes(context.presence.status)) {
-        return `sprite-${context.presence.status}`;
-      } else {
-        return ``;
-      }
-    };
-
-    const memberTemplate = (context) => `
-      <div class="col">
-          <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
-              <div class="card-img-top p-3 pb-0 mx-auto">
-                  <div class="ratio ratio-1x1">
-                      <img src="${spritePath + context.name.toLowerCase()}.png" alt="Avatar of ${context.name}" class="${animationTemplate(context)} pixelated rounded-5"
-                              onerror="this.src = '${avatarPlaceholder + encodeURIComponent(context.name)}';">
+  <div
+    id="memberlist-container"
+    data-url={isDev ? '/members.json' : `${construct8Url}/members.json`}
+    data-sprites={JSON.stringify(availableSprites)}
+    data-dev={isDev ? "true" : "false"}
+  >
+    <!-- Shimmer skeleton is rendered statically on the server to prevent FOUC / CLS -->
+    <div id="memberlist-skeleton">
+      {skeletonRoles.map((count) => (
+        <div>
+          <div class="skeleton h5 fw-light w-25 mb-3">&nbsp;</div>
+          <div class="mb-4">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
+              {Array.from({ length: count }).map(() => (
+                <div class="col">
+                  <div class="card rounded-5 shadow-sm position-relative overflow-hidden">
+                    <div class="card-img-top p-3 pb-0 mx-auto">
+                      <div class="skeleton ratio ratio-1x1 rounded-5"></div>
+                    </div>
+                    <div class="card-body text-center">
+                      <div class="skeleton h6 card-title fw-light w-75 mx-auto">&nbsp;</div>
+                    </div>
                   </div>
-              </div>
-              <div class="card-body text-center">
-                  <h6 class="card-title fw-light">${statusTemplate(context)} ${context.name}</h6>
-              </div>
-          </div>
-      </div>
-    `;
-
-    const construct8Link = '<a href="https://github.com/ivalicealliance/construct8/" class="link-secondary" target="_blank" rel="noopener noreferrer">Construct8</a>';
-
-    const template = (list) => `
-      ${list.roles
-        .map(
-          (role) => `
-            <h5 class="fw-light">${role.name}</h5>
-            <div class="mb-4">
-                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
-                    ${list.members
-                      .filter((member) => member.position === role.position)
-                      .map(memberTemplate)
-                      .join('')}
                 </div>
+              ))}
             </div>
-          `
-        )
-        .join('')}
-        <div class="text-center">
-            <div class="d-inline-flex">
-                <ul class="text-body-tertiary list-inline m-0">
-                    <li class="list-inline-item">
-                        <i class="fa-solid fa-users"></i>
-                        ${list.meta.membercount} members
-                    </li>
-                    <li class="list-inline-item">
-                        <i class="fa-solid fa-sitemap"></i>
-                        ${list.meta.rolecount} roles
-                    </li>
-                    <li class="list-inline-item">
-                        <i class="fa-solid fa-robot"></i>
-                        ${construct8Link}
-                    </li>
-                    <li class="list-inline-item">
-                        <i class="fa-solid fa-clock"></i>
-                        ${new Date(list.meta.lastModified).toLocaleTimeString('en-US', dateOptions)}
-                    </li>
-                </ul>
-            </div>
+          </div>
         </div>
-    `;
+      ))}
+    </div>
+    <div id="memberlist" style="display:none"></div>
+  </div>
 
-    const errorMessage = `
-        <i class="fa-solid fa-triangle-exclamation"></i> Unfortunately ${construct8Link} is unreachable at the moment. Please try again later. If this issue persists,
-        bring it to the attention of the community's leadership.
-    `;
-
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((context) => {
-        const listElem = document.getElementById('memberlist');
-        const skeletonElem = document.getElementById('memberlist-skeleton');
-        if (listElem) {
-          listElem.innerHTML = template(context);
-          listElem.style.display = '';
-        }
-        if (skeletonElem) {
-          skeletonElem.remove();
-        }
-      })
-      .catch((error) => {
-        const listElem = document.getElementById('memberlist');
-        const skeletonElem = document.getElementById('memberlist-skeleton');
-        if (listElem) {
-          listElem.innerHTML = errorMessage;
-          listElem.style.display = '';
-        }
-        if (skeletonElem) {
-          skeletonElem.remove();
-        }
-      });
+  <script>
+    import '../js/members';
   </script>
 </Layout>
