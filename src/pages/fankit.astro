@@ -1,0 +1,1173 @@
+---
+import fs from 'node:fs';
+import Layout from '../layouts/Layout.astro';
+
+// Load template from the txt file at build-time
+let initialTemplate = "";
+try {
+  initialTemplate = fs.readFileSync('public/tools/bot_welcome_message.txt', 'utf8');
+} catch (e) {
+  initialTemplate = `Welcome, {member}, to the grand stage of **{server_name}**! I'm {username}, your guide.`;
+}
+---
+
+<Layout
+  title="Fan Kit"
+  description="Official community creative assets, avatar generator, and custom swag builder for the Ivalice Alliance."
+  custom_icon="fa-solid fa-wand-magic-sparkles"
+>
+  <!-- Google Fonts: Prompt (600) & Raleway (500) for Canvas rendering -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600&family=Raleway:wght@500&display=swap" rel="stylesheet" />
+
+  <!-- Hidden elements to force browser download of fonts for Canvas rendering -->
+  <div style="font-family: 'Prompt'; font-weight: 600; position: absolute; opacity: 0; pointer-events: none; height: 0; width: 0; overflow: hidden;" aria-hidden="true">force-load</div>
+  <div style="font-family: 'Raleway'; font-weight: 500; position: absolute; opacity: 0; pointer-events: none; height: 0; width: 0; overflow: hidden;" aria-hidden="true">force-load</div>
+
+  <p class="mb-4 text-center text-md-start">
+    Welcome to the community Fan Kit! Download official high-resolution insignia and print-ready vector assets, craft custom branded persona avatars, or explore server bot utilities.
+  </p>
+
+  <!-- Navigation Tabs (Standard Bootstrap 5.3 Nav Pills) -->
+  <ul class="nav nav-pills justify-content-center gap-2 mb-4 mb-md-5" id="fankitTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button 
+        class="nav-link active rounded-pill px-3 py-2 fw-semibold" 
+        id="swag-tab" 
+        data-bs-toggle="pill" 
+        data-bs-target="#swag-pane" 
+        type="button" 
+        role="tab" 
+        aria-controls="swag-pane" 
+        aria-selected="true"
+      >
+        <i class="fa-solid fa-stamp me-2"></i>Insignia &amp; Swag
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button 
+        class="nav-link rounded-pill px-3 py-2 fw-semibold" 
+        id="avatar-tab" 
+        data-bs-toggle="pill" 
+        data-bs-target="#avatar-pane" 
+        type="button" 
+        role="tab" 
+        aria-controls="avatar-pane" 
+        aria-selected="false"
+      >
+        <i class="fa-solid fa-id-badge me-2"></i>Avatar Maker
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button 
+        class="nav-link rounded-pill px-3 py-2 fw-semibold" 
+        id="bot-tab" 
+        data-bs-toggle="pill" 
+        data-bs-target="#bot-pane" 
+        type="button" 
+        role="tab" 
+        aria-controls="bot-pane" 
+        aria-selected="false"
+      >
+        <i class="fa-solid fa-robot me-2"></i>Bot Lab
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content Panels -->
+  <div class="tab-content" id="fankitTabContent">
+    <!-- Tab 1: Insignia & Swag -->
+    <div class="tab-pane fade show active" id="swag-pane" role="tabpanel" aria-labelledby="swag-tab" tabindex="0">
+      <div class="row g-4 mb-4">
+        <!-- Live Preview Canvas (Rendered first on mobile, right on desktop) -->
+        <div class="col-lg-7 order-1 order-lg-2">
+          <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 h-100 d-flex flex-column justify-content-between">
+            <div class="text-center mb-3 mb-md-4">
+              <h4 class="fw-semibold mb-1">Canvas Alignment</h4>
+              <p class="small text-body-secondary mb-0">Interactive bounds preview with checkerboard transparency.</p>
+            </div>
+
+            <!-- Checkerboard preview container -->
+            <div class="logo-preview-container rounded-4 shadow-sm border overflow-hidden my-auto">
+              <div class="logo-canvas-inner" id="logo-preview-wrapper">
+                <div class="guide-x" id="guide-x-elem"></div>
+                <div class="guide-y" id="guide-y-elem"></div>
+                <div class="circle-guide" id="guide-circle-elem"></div>
+                <img 
+                  src="/assets/images/logo.svg" 
+                  alt="Ivalice Alliance Insignia" 
+                  class="logo-img brand-gradient" 
+                  id="source-logo-img" 
+                  width="240" 
+                  height="240" 
+                />
+              </div>
+            </div>
+
+            <div class="text-center mt-3 mt-md-4">
+              <span class="small text-body-secondary">
+                <i class="fa-solid fa-circle-info me-1"></i> Exported files include full alpha transparency without guide markings.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Panel (Rendered second on mobile, left on desktop) -->
+        <div class="col-lg-5 order-2 order-lg-1">
+          <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 h-100">
+            <h4 class="fw-semibold mb-4 text-center text-lg-start">Alignment &amp; Mask Options</h4>
+
+            <!-- Toggles -->
+            <div class="mb-4">
+              <label class="form-label small fw-medium d-block mb-2">Guide Lines</label>
+              <div class="form-check form-switch mb-2 py-1">
+                <input class="form-check-input" type="checkbox" role="switch" id="toggle-guide-cross" checked />
+                <label class="form-check-label small" for="toggle-guide-cross">Center Crosshair Lines (Red)</label>
+              </div>
+              <div class="form-check form-switch py-1">
+                <input class="form-check-input" type="checkbox" role="switch" id="toggle-guide-circle" checked />
+                <label class="form-check-label small" for="toggle-guide-circle">Circle Boundary Guide (Blue)</label>
+              </div>
+            </div>
+
+            <!-- Mask Selection -->
+            <div class="mb-4">
+              <label for="logo-mask" class="form-label small fw-medium">Color Mask / Filter</label>
+              <select class="form-select rounded-3" id="logo-mask">
+                <option value="brand-gradient" selected>Brand Gradient (Coral &rarr; Ultramarine)</option>
+                <option value="silhouette-black">Silhouette (Solid Black)</option>
+                <option value="silhouette-white">Negative (Solid White)</option>
+                <option value="original">Original SVG Colors</option>
+              </select>
+            </div>
+
+            <!-- Export Resolution Selection -->
+            <div class="mb-4">
+              <label for="export-resolution" class="form-label small fw-medium">Export Resolution (Square)</label>
+              <select class="form-select rounded-3" id="export-resolution">
+                <option value="4000">4000 &times; 4000 px (Ultra High-Res)</option>
+                <option value="2048">2048 &times; 2048 px (High-Res)</option>
+                <option value="1024">1024 &times; 1024 px (Standard)</option>
+                <option value="512">512 &times; 512 px (Avatar Size)</option>
+              </select>
+            </div>
+
+            <!-- Action Export Button -->
+            <div class="d-grid mt-4">
+              <button type="button" class="btn btn-primary rounded-pill py-2 py-md-3 fw-medium" id="export-imprint-btn">
+                <i class="fa-solid fa-file-export me-2"></i>Export Insignia PNG
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Downloads Section -->
+      <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 mb-4">
+        <h4 class="fw-bold mb-4"><i class="fa-solid fa-download me-2 text-primary"></i>Official Brand Files</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+          <!-- Item 1: SVG Logo -->
+          <div class="col">
+            <div class="card h-100 border rounded-4 bg-body p-3 d-flex flex-column justify-content-between transition-hover">
+              <div>
+                <div class="text-center mb-3">
+                  <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 d-inline-block">
+                    <i class="fa-solid fa-bezier-curve fa-2x"></i>
+                  </div>
+                </div>
+                <h5 class="fw-semibold mb-1 text-center">Official SVG Logo</h5>
+                <p class="small text-body-secondary mb-3">Scalable vector graphics logo file. Ideal for design software.</p>
+              </div>
+              <a href="/assets/images/logo.svg" download class="btn btn-outline-secondary rounded-pill w-100 py-2">
+                <i class="fa-solid fa-arrow-down me-1"></i> Download SVG
+              </a>
+            </div>
+          </div>
+          <!-- Item 2: Optically Centered -->
+          <div class="col">
+            <div class="card h-100 border rounded-4 bg-body p-3 d-flex flex-column justify-content-between transition-hover">
+              <div>
+                <div class="text-center mb-3">
+                  <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 d-inline-block">
+                    <i class="fa-solid fa-image fa-2x"></i>
+                  </div>
+                </div>
+                <h5 class="fw-semibold mb-1 text-center">Optically Centered</h5>
+                <p class="small text-body-secondary mb-3">Imprint with corrected optical alignment in PNG format.</p>
+              </div>
+              <a href="/assets/images/monochrome-imprint-centered.png" download class="btn btn-outline-secondary rounded-pill w-100 py-2">
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
+              </a>
+            </div>
+          </div>
+          <!-- Item 3: Tight Crop (No Padding) -->
+          <div class="col">
+            <div class="card h-100 border rounded-4 bg-body p-3 d-flex flex-column justify-content-between transition-hover">
+              <div>
+                <div class="text-center mb-3">
+                  <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 d-inline-block">
+                    <i class="fa-solid fa-image fa-2x"></i>
+                  </div>
+                </div>
+                <h5 class="fw-semibold mb-1 text-center">Tight Crop (No Padding)</h5>
+                <p class="small text-body-secondary mb-3">Cropped to the bounds of the horizontal design with zero margins.</p>
+              </div>
+              <a href="/assets/images/monochrome-imprint.png" download class="btn btn-outline-secondary rounded-pill w-100 py-2">
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
+              </a>
+            </div>
+          </div>
+          <!-- Item 4: Favicon PNG -->
+          <div class="col">
+            <div class="card h-100 border rounded-4 bg-body p-3 d-flex flex-column justify-content-between transition-hover">
+              <div>
+                <div class="text-center mb-3">
+                  <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 d-inline-block">
+                    <i class="fa-solid fa-circle-user fa-2x"></i>
+                  </div>
+                </div>
+                <h5 class="fw-semibold mb-1 text-center">Web Favicon</h5>
+                <p class="small text-body-secondary mb-3">High-resolution square shortcut icon in PNG format.</p>
+              </div>
+              <a href="/assets/images/favicon.png" download class="btn btn-outline-secondary rounded-pill w-100 py-2">
+                <i class="fa-solid fa-arrow-down me-1"></i> Download PNG
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Color Palette Card -->
+      <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 mb-0">
+        <h4 class="fw-bold mb-3"><i class="fa-solid fa-palette me-2 text-primary"></i>Official Color Palette</h4>
+        <p class="small text-body-secondary mb-4">The core gradients and accent tones used across Ivalice Alliance web and Discord branding.</p>
+        <div class="row row-cols-1 row-cols-sm-2 g-3">
+          <div class="col">
+            <div class="card border rounded-4 bg-body p-3 h-100">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-3 shadow-sm flex-shrink-0" style="width: 54px; height: 54px; background-color: #FF6F61;"></div>
+                <div class="flex-grow-1 min-w-0">
+                  <h6 class="fw-bold mb-0">Living Coral</h6>
+                  <div class="small text-body-secondary">PANTONE 16-1546 TCX &bull; <code>#FF6F61</code></div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary rounded-pill copy-hex-btn" data-hex="#FF6F61" title="Copy HEX">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card border rounded-4 bg-body p-3 h-100">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-3 shadow-sm flex-shrink-0" style="width: 54px; height: 54px; background-color: #5B7EBD;"></div>
+                <div class="flex-grow-1 min-w-0">
+                  <h6 class="fw-bold mb-0">Ultramarine</h6>
+                  <div class="small text-body-secondary">PANTONE 17-4037 TCX &bull; <code>#5B7EBD</code></div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary rounded-pill copy-hex-btn" data-hex="#5B7EBD" title="Copy HEX">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Avatar Maker -->
+    <div class="tab-pane fade" id="avatar-pane" role="tabpanel" aria-labelledby="avatar-tab" tabindex="0">
+      <div class="row g-4 mb-4">
+        <!-- Live Preview & Export (Rendered first on mobile, right on desktop) -->
+        <div class="col-lg-7 order-1 order-lg-2">
+          <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 h-100 d-flex flex-column align-items-center justify-content-between text-center">
+            <div>
+              <h4 class="fw-semibold mb-2">Live Preview</h4>
+              <p class="small text-body-secondary mb-3 mb-md-4">Real-time preview rendered directly via canvas.</p>
+            </div>
+
+            <div class="my-auto d-flex align-items-center justify-content-center p-2 p-sm-3 w-100">
+              <canvas 
+                id="preview-canvas" 
+                class="rounded-4 rounded-md-5 shadow" 
+                style="width: min(260px, 100%); height: auto; aspect-ratio: 1/1;"
+              ></canvas>
+            </div>
+
+            <div class="w-100 mt-3 mt-md-4">
+              <label class="form-label small fw-medium text-body-secondary mb-2 mb-md-3 d-block">Export Avatar PNG</label>
+              <div class="d-flex flex-column flex-sm-row justify-content-center align-items-stretch align-items-sm-center gap-2">
+                <button type="button" class="btn btn-primary rounded-pill px-4 py-2 flex-grow-1 flex-sm-grow-0" id="export-512">
+                  <i class="fa-solid fa-arrow-down me-1"></i> Download 512&times;512 px
+                </button>
+                <div class="d-flex justify-content-center gap-2">
+                  <button type="button" class="btn btn-outline-secondary rounded-pill px-3 py-2 flex-fill flex-sm-fill-0" id="export-1024">
+                    1024&times;1024 px
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary rounded-pill px-3 py-2 flex-fill flex-sm-fill-0" id="export-256">
+                    256&times;256 px
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration Controls (Rendered second on mobile, left on desktop) -->
+        <div class="col-lg-5 order-2 order-lg-1">
+          <div class="card border-0 bg-body-tertiary rounded-4 rounded-md-5 shadow-sm p-3 p-sm-4 p-md-5 h-100">
+            <h4 class="fw-semibold mb-4 text-center text-lg-start">Customize Avatar</h4>
+
+            <!-- Text Settings -->
+            <div class="mb-4">
+              <label for="icon-text" class="form-label small fw-medium">Icon Text / Monogram</label>
+              <input type="text" class="form-control rounded-3" id="icon-text" value="IA" maxlength="4" placeholder="e.g. IA" />
+              <div class="form-text">Max 4 characters. Perfect for member initials or personas.</div>
+            </div>
+
+            <div class="row mb-4 g-3">
+              <div class="col-6">
+                <label for="font-family" class="form-label small fw-medium">Font Family</label>
+                <select class="form-select rounded-3" id="font-family">
+                  <option value="Prompt" selected>Prompt</option>
+                  <option value="Raleway">Raleway</option>
+                  <option value="sans-serif">Sans-Serif</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="text-color" class="form-label small fw-medium">Text Color</label>
+                <input type="color" class="form-control form-control-color rounded-3 w-100" id="text-color" value="#FFFFFF" title="Choose text color" />
+              </div>
+            </div>
+
+            <!-- Background Style -->
+            <div class="mb-4">
+              <label class="form-label small fw-medium d-block">Background Style</label>
+              <div class="form-check form-check-inline py-1">
+                <input class="form-check-input" type="radio" name="bg-style" id="bg-style-gradient" value="gradient" checked />
+                <label class="form-check-label" for="bg-style-gradient">Brand Gradient</label>
+              </div>
+              <div class="form-check form-check-inline py-1">
+                <input class="form-check-input" type="radio" name="bg-style" id="bg-style-solid" value="solid" />
+                <label class="form-check-label" for="bg-style-solid">Solid Color</label>
+              </div>
+            </div>
+
+            <!-- Gradient Controls (Brand Colors Default) -->
+            <div class="mb-4" id="gradient-color-wrap">
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="bg-color-start" class="form-label small fw-medium">Start (Coral)</label>
+                  <input type="color" class="form-control form-control-color rounded-3 w-100" id="bg-color-start" value="#FF6F61" />
+                </div>
+                <div class="col-6">
+                  <label for="bg-color-end" class="form-label small fw-medium">End (Ultramarine)</label>
+                  <input type="color" class="form-control form-control-color rounded-3 w-100" id="bg-color-end" value="#5B7EBD" />
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="d-flex justify-content-between">
+                  <label for="gradient-angle" class="form-label small fw-medium mb-1">Gradient Angle</label>
+                  <span class="small text-body-secondary"><span id="angle-val">135</span>&deg;</span>
+                </div>
+                <input type="range" class="form-range" id="gradient-angle" min="0" max="360" value="135" />
+              </div>
+            </div>
+
+            <!-- Solid Color Control -->
+            <div class="mb-4 d-none" id="solid-color-wrap">
+              <label for="bg-color-solid" class="form-label small fw-medium">Background Color</label>
+              <input type="color" class="form-control form-control-color rounded-3 w-100" id="bg-color-solid" value="#FF6F61" title="Choose background color" />
+            </div>
+
+            <!-- Presets -->
+            <div>
+              <label class="form-label small fw-medium d-block text-uppercase text-body-secondary mb-2">Palette Presets</label>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-primary rounded-pill preset-btn" data-text="IA" data-gradient-start="#FF6F61" data-gradient-end="#5B7EBD">
+                  <i class="fa-solid fa-sparkles me-1"></i> Brand Gradient
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill preset-btn" data-color="#FF6F61">
+                  Living Coral
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill preset-btn" data-color="#5B7EBD">
+                  Ultramarine
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill preset-btn" data-text="Cs" data-color="#6E4797">
+                  Cait Sith
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill preset-btn" data-text="Sc" data-color="#1975D2">
+                  Save Crystal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Bot Lab & Staff -->
+    <div class="tab-pane fade" id="bot-pane" role="tabpanel" aria-labelledby="bot-tab" tabindex="0">
+      <div class="alert alert-info border-0 rounded-4 d-flex align-items-center mb-4">
+        <i class="fa-solid fa-circle-info fa-lg text-info me-3"></i>
+        <div class="small">
+          <strong>Staff &amp; Bot Utilities:</strong> Tools used by server Judges to test bot onboarding messages and server integrations.
+        </div>
+      </div>
+
+      <!-- Discord Onboarding Section -->
+      <div class="card rounded-4 rounded-md-5 shadow-sm border-0 bg-body-tertiary p-3 p-sm-4 p-md-5 mb-0">
+        <div class="row align-items-center mb-4">
+          <div class="col-auto">
+            <div class="rounded-4 p-3 bg-info bg-opacity-10 text-info">
+              <i class="fa-brands fa-discord fa-2x fa-fw"></i>
+            </div>
+          </div>
+          <div class="col">
+            <h3 class="m-0 fw-semibold">Discord Welcome Message</h3>
+            <p class="text-body-secondary m-0">Onboarding welcome template for the server's welcoming bot.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Input Controls -->
+          <div class="col-lg-4">
+            <h5 class="fw-semibold mb-3">Live Parameters</h5>
+            <div class="mb-3">
+              <label for="welcome-member" class="form-label small fw-medium">Member Name (&#123;member&#125;)</label>
+              <input type="text" class="form-control rounded-3" id="welcome-member" value="Cloud" placeholder="e.g. Cloud" autocomplete="off" autocorrect="off" spellcheck="false" />
+            </div>
+            <div class="mb-3">
+              <label for="welcome-server" class="form-label small fw-medium">Server Name (&#123;server_name&#125;)</label>
+              <input type="text" class="form-control rounded-3" id="welcome-server" value="Ivalice Alliance" placeholder="e.g. Ivalice Alliance" autocomplete="off" autocorrect="off" spellcheck="false" />
+            </div>
+            <div class="mb-3">
+              <label for="welcome-botname" class="form-label small fw-medium">Bot Name (&#123;username&#125;)</label>
+              <input type="text" class="form-control rounded-3" id="welcome-botname" name="bot_alias" value="CaitSith" placeholder="e.g. CaitSith" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore="true" data-lpignore="true" />
+            </div>
+          </div>
+
+          <!-- Live Preview & Raw Code -->
+          <div class="col-lg-8">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+              <h5 class="fw-semibold m-0">Output Preview</h5>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-primary rounded-pill px-3 py-2" id="btn-copy-interpolated">
+                  <i class="fa-solid fa-copy me-1"></i> Copy Message
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-3 py-2" id="btn-copy-template">
+                  <i class="fa-solid fa-code me-1"></i> Copy Template
+                </button>
+              </div>
+            </div>
+
+            <div class="position-relative">
+              <textarea 
+                class="form-control font-monospace text-body bg-body rounded-4 p-3 p-md-4" 
+                id="welcome-output" 
+                rows="9" 
+                readonly 
+                style="resize: none; border: 1px solid var(--bs-border-color);"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Universal Toast Notification (Floating Pill) -->
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3 mb-2" style="z-index: 1080; pointer-events: none; bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;">
+    <div id="universal-toast" class="toast align-items-center text-bg-dark border-0 rounded-pill shadow-lg px-3 py-1" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: auto;">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-circle-check text-success me-2 ms-1"></i>
+        <div class="toast-body small fw-medium py-2 px-1 text-nowrap" id="universal-toast-body">
+          Copied to clipboard!
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-2 me-1" data-bs-dismiss="toast" aria-label="Close" style="font-size: 0.75rem;"></button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Bootstrap 5.3 Nav Pills Polish (Zero-FOUC, pure color transitions) */
+    .nav-pills .nav-link {
+      color: var(--bs-body-color);
+      background-color: var(--bs-tertiary-bg);
+      border: 1px solid var(--bs-border-color);
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .nav-pills .nav-link:hover:not(.active) {
+        color: var(--bs-primary);
+        border-color: rgba(var(--bs-primary-rgb), 0.4);
+        background-color: rgba(var(--bs-primary-rgb), 0.08);
+      }
+      .transition-hover {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      }
+      .transition-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--bs-box-shadow) !important;
+        border-color: rgba(var(--bs-primary-rgb), 0.35) !important;
+      }
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: var(--bs-primary) !important;
+      border-color: var(--bs-primary) !important;
+      color: #fff !important;
+      box-shadow: 0 3px 10px rgba(var(--bs-primary-rgb), 0.25);
+    }
+
+    /* iOS Zoom Bug Fix & Form Controls */
+    input[type="text"],
+    select,
+    textarea,
+    .form-control,
+    .form-select {
+      font-size: max(16px, 1rem); /* Prevents auto-zoom on iOS Safari */
+    }
+
+    .form-control-color {
+      height: 42px !important;
+      padding: 4px !important;
+      cursor: pointer;
+      touch-action: manipulation;
+      border-radius: 0.5rem !important;
+    }
+    .form-control-color::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 0.375rem;
+    }
+    .form-control-color::-webkit-color-swatch {
+      border-radius: 0.375rem;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .form-control-color::-moz-color-swatch {
+      border-radius: 0.375rem;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    /* Radio buttons & toggle switches */
+    .form-check {
+      margin-bottom: 0.5rem;
+    }
+    .form-check-inline {
+      margin-right: 1.25rem;
+      margin-bottom: 0;
+    }
+
+    .form-check .form-check-input {
+      cursor: pointer;
+    }
+
+    .form-check .form-check-label,
+    .form-check-input-label {
+      cursor: pointer;
+      user-select: none;
+      line-height: 1.4;
+    }
+
+    .form-switch {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-switch .form-check-input {
+      width: 2.25rem;
+      height: 1.2rem;
+      margin-top: 0;
+      margin-right: 0.65rem;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* Range slider */
+    .form-range {
+      cursor: pointer;
+    }
+
+    /* Palette Preset Chips */
+    .preset-btn {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.35rem 0.8rem !important;
+      border-radius: 50rem;
+      touch-action: manipulation;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+    .preset-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Color Swatch Hex Copy Button */
+    .copy-hex-btn {
+      width: 36px;
+      height: 36px;
+      padding: 0 !important;
+      border-radius: 50rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      touch-action: manipulation;
+    }
+
+    /* Responsive card radii & desktop textarea font sizing */
+    @media (min-width: 768px) {
+      .rounded-md-5 {
+        border-radius: var(--bs-border-radius-2xl) !important;
+      }
+      #welcome-output {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Logo Imprint Preview & Checkerboard responsive scaling down to 280px */
+    .logo-preview-container {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1/1;
+      margin: 0 auto;
+      position: relative;
+      box-sizing: border-box;
+      background-color: var(--bs-body-bg);
+      background-image: 
+        linear-gradient(45deg, var(--bs-tertiary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--bs-tertiary-bg) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, var(--bs-tertiary-bg) 75%), 
+        linear-gradient(-45deg, transparent 75%, var(--bs-tertiary-bg) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+
+    .logo-canvas-inner {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      position: relative;
+    }
+
+    .guide-x {
+      width: 2px;
+      height: 100%;
+      background: var(--bs-danger);
+      opacity: 0.4;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+    }
+
+    .guide-y {
+      width: 100%;
+      height: 2px;
+      background: var(--bs-danger);
+      opacity: 0.4;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      align-self: center;
+    }
+
+    .circle-guide {
+      width: 75%;
+      height: 75%;
+      border-radius: 50%;
+      border: 2px dashed var(--bs-primary);
+      opacity: 0.5;
+      z-index: 2;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+      align-self: center;
+      pointer-events: none;
+    }
+
+    .logo-img {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      display: block;
+      z-index: 1;
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+      align-self: center;
+      transition: filter 0.2s ease;
+    }
+
+    .logo-img.silhouette-black {
+      filter: brightness(0) saturate(100%);
+    }
+
+    .logo-img.silhouette-white {
+      filter: brightness(0) invert(1);
+    }
+
+    .logo-img.brand-gradient {
+      filter: drop-shadow(0px 0px 0px transparent);
+      background: linear-gradient(to bottom right, #FF6F61, #5B7EBD);
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+      mask-image: url('/assets/images/logo.svg');
+      -webkit-mask-image: url('/assets/images/logo.svg');
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+      width: 75%;
+      height: 75%;
+      object-position: -9999px -9999px;
+    }
+
+    .logo-img.original {
+      filter: none;
+    }
+  </style>
+
+  <!-- Interactive script for Avatar Maker, Logo Imprint, Colors, and Discord Template -->
+  <script is:inline define:vars={{ initialTemplate }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Toast Notification Utility
+      const toastEl = document.getElementById('universal-toast');
+      const toastBody = document.getElementById('universal-toast-body');
+      let bsToast = null;
+      if (window.bootstrap && window.bootstrap.Toast && toastEl) {
+        bsToast = new window.bootstrap.Toast(toastEl, { delay: 2000 });
+      }
+
+      function notify(msg) {
+        if (bsToast && toastBody) {
+          toastBody.textContent = msg;
+          bsToast.show();
+        }
+      }
+
+      // ==========================================
+      // 2. AVATAR MAKER (Brand Colors by default)
+      // ==========================================
+      const textInput = document.getElementById('icon-text');
+      const fontFamilySelect = document.getElementById('font-family');
+      const textColorInput = document.getElementById('text-color');
+      const bgStyleSolid = document.getElementById('bg-style-solid');
+      const bgStyleGradient = document.getElementById('bg-style-gradient');
+      
+      const solidWrap = document.getElementById('solid-color-wrap');
+      const gradientWrap = document.getElementById('gradient-color-wrap');
+      
+      const solidColorInput = document.getElementById('bg-color-solid');
+      const startColorInput = document.getElementById('bg-color-start');
+      const endColorInput = document.getElementById('bg-color-end');
+      const gradientAngleInput = document.getElementById('gradient-angle');
+      const angleValSpan = document.getElementById('angle-val');
+      
+      const avatarCanvas = document.getElementById('preview-canvas');
+      let avatarCtx = null;
+      if (avatarCanvas) {
+        avatarCtx = avatarCanvas.getContext('2d');
+        avatarCanvas.width = 1024;
+        avatarCanvas.height = 1024;
+      }
+
+      function renderAvatar() {
+        if (!avatarCanvas || !avatarCtx) return;
+        const text = textInput ? textInput.value || '' : 'IA';
+        const fontFamily = fontFamilySelect ? fontFamilySelect.value : 'Prompt';
+        const textColor = textColorInput ? textColorInput.value : '#FFFFFF';
+        const isGradient = bgStyleGradient ? bgStyleGradient.checked : true;
+
+        avatarCtx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        // Draw Background
+        if (isGradient) {
+          const start = startColorInput ? startColorInput.value : '#FF6F61';
+          const end = endColorInput ? endColorInput.value : '#5B7EBD';
+          const angleDeg = gradientAngleInput ? parseInt(gradientAngleInput.value, 10) : 135;
+          const angleRad = (angleDeg * Math.PI) / 180;
+          
+          const halfW = avatarCanvas.width / 2;
+          const halfH = avatarCanvas.height / 2;
+          
+          const x1 = halfW - Math.cos(angleRad) * halfW;
+          const y1 = halfH - Math.sin(angleRad) * halfH;
+          const x2 = halfW + Math.cos(angleRad) * halfW;
+          const y2 = halfH + Math.sin(angleRad) * halfH;
+
+          const grad = avatarCtx.createLinearGradient(x1, y1, x2, y2);
+          grad.addColorStop(0, start);
+          grad.addColorStop(1, end);
+          avatarCtx.fillStyle = grad;
+        } else {
+          avatarCtx.fillStyle = solidColorInput ? solidColorInput.value : '#FF6F61';
+        }
+        avatarCtx.fillRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        // Draw Centered Monogram Text
+        avatarCtx.fillStyle = textColor;
+        avatarCtx.textAlign = 'center';
+        avatarCtx.textBaseline = 'middle';
+        
+        let fontSize = 640;
+        if (text.length > 2) {
+          fontSize = 640 - (text.length - 2) * 120;
+        }
+        
+        avatarCtx.font = `600 ${fontSize}px ${fontFamily}`;
+        avatarCtx.fillText(text, avatarCanvas.width / 2, avatarCanvas.height / 2);
+      }
+
+      function updateBgMode() {
+        if (bgStyleGradient && bgStyleGradient.checked) {
+          solidWrap?.classList.add('d-none');
+          gradientWrap?.classList.remove('d-none');
+        } else {
+          solidWrap?.classList.remove('d-none');
+          gradientWrap?.classList.add('d-none');
+        }
+        renderAvatar();
+      }
+
+      if (bgStyleSolid && bgStyleGradient) {
+        bgStyleSolid.addEventListener('change', updateBgMode);
+        bgStyleGradient.addEventListener('change', updateBgMode);
+      }
+
+      textInput?.addEventListener('input', renderAvatar);
+      fontFamilySelect?.addEventListener('change', renderAvatar);
+      textColorInput?.addEventListener('input', renderAvatar);
+      solidColorInput?.addEventListener('input', renderAvatar);
+      startColorInput?.addEventListener('input', renderAvatar);
+      endColorInput?.addEventListener('input', renderAvatar);
+      
+      gradientAngleInput?.addEventListener('input', () => {
+        if (angleValSpan) angleValSpan.textContent = gradientAngleInput.value;
+        renderAvatar();
+      });
+
+      // Presets
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-text');
+          const color = btn.getAttribute('data-color');
+          const gStart = btn.getAttribute('data-gradient-start');
+          const gEnd = btn.getAttribute('data-gradient-end');
+
+          if (text && textInput) textInput.value = text;
+          
+          if (color) {
+            if (bgStyleSolid) bgStyleSolid.checked = true;
+            if (solidColorInput) solidColorInput.value = color;
+            updateBgMode();
+          } else if (gStart && gEnd) {
+            if (bgStyleGradient) bgStyleGradient.checked = true;
+            if (startColorInput) startColorInput.value = gStart;
+            if (endColorInput) endColorInput.value = gEnd;
+            updateBgMode();
+          }
+        });
+      });
+
+      // Export Avatar PNG
+      function downloadAvatarPng(size) {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = size;
+        tempCanvas.height = size;
+        const tempCtx = tempCanvas.getContext('2d');
+
+        const isGradient = bgStyleGradient ? bgStyleGradient.checked : true;
+        if (isGradient) {
+          const start = startColorInput ? startColorInput.value : '#FF6F61';
+          const end = endColorInput ? endColorInput.value : '#5B7EBD';
+          const angleDeg = gradientAngleInput ? parseInt(gradientAngleInput.value, 10) : 135;
+          const angleRad = (angleDeg * Math.PI) / 180;
+          
+          const half = size / 2;
+          const x1 = half - Math.cos(angleRad) * half;
+          const y1 = half - Math.sin(angleRad) * half;
+          const x2 = half + Math.cos(angleRad) * half;
+          const y2 = half + Math.sin(angleRad) * half;
+
+          const grad = tempCtx.createLinearGradient(x1, y1, x2, y2);
+          grad.addColorStop(0, start);
+          grad.addColorStop(1, end);
+          tempCtx.fillStyle = grad;
+        } else {
+          tempCtx.fillStyle = solidColorInput ? solidColorInput.value : '#FF6F61';
+        }
+        tempCtx.fillRect(0, 0, size, size);
+
+        const text = textInput ? textInput.value || '' : 'IA';
+        tempCtx.fillStyle = textColorInput ? textColorInput.value : '#FFFFFF';
+        tempCtx.textAlign = 'center';
+        tempCtx.textBaseline = 'middle';
+        
+        let fontSize = size * 0.625;
+        if (text.length > 2) {
+          fontSize = fontSize - (text.length - 2) * (size * 0.12);
+        }
+        
+        tempCtx.font = `600 ${fontSize}px ${fontFamilySelect ? fontFamilySelect.value : 'Prompt'}`;
+        tempCtx.fillText(text, size / 2, size / 2);
+
+        const link = document.createElement('a');
+        link.download = `avatar-${text || 'icon'}-${size}x${size}.png`;
+        link.href = tempCanvas.toDataURL('image/png');
+        link.click();
+        notify(`Downloaded ${size}×${size} avatar PNG!`);
+      }
+
+      document.getElementById('export-512')?.addEventListener('click', () => downloadAvatarPng(512));
+      document.getElementById('export-1024')?.addEventListener('click', () => downloadAvatarPng(1024));
+      document.getElementById('export-256')?.addEventListener('click', () => downloadAvatarPng(256));
+
+      // Font loading trigger for initial draw
+      if (document.fonts && typeof document.fonts.load === 'function') {
+        Promise.all([
+          document.fonts.load('600 100px "Prompt"'),
+          document.fonts.load('500 100px "Raleway"')
+        ]).then(() => {
+          renderAvatar();
+        }).catch(() => {
+          renderAvatar();
+        });
+        document.fonts.ready.then(renderAvatar);
+      } else {
+        setTimeout(renderAvatar, 400);
+      }
+
+      // Re-render avatar canvas when switching to Avatar tab
+      document.getElementById('avatar-tab')?.addEventListener('shown.bs.tab', () => {
+        renderAvatar();
+      });
+
+      // ==========================================
+      // 3. LOGO IMPRINT BUILDER
+      // ==========================================
+      const toggleCross = document.getElementById('toggle-guide-cross');
+      const toggleCircle = document.getElementById('toggle-guide-circle');
+      const maskSelect = document.getElementById('logo-mask');
+      const resolutionSelect = document.getElementById('export-resolution');
+      const exportImprintBtn = document.getElementById('export-imprint-btn');
+      
+      const guideX = document.getElementById('guide-x-elem');
+      const guideY = document.getElementById('guide-y-elem');
+      const guideCircle = document.getElementById('guide-circle-elem');
+      const logoImg = document.getElementById('source-logo-img');
+
+      function updateGuides() {
+        if (guideX && toggleCross) guideX.style.display = toggleCross.checked ? 'block' : 'none';
+        if (guideY && toggleCross) guideY.style.display = toggleCross.checked ? 'block' : 'none';
+        if (guideCircle && toggleCircle) guideCircle.style.display = toggleCircle.checked ? 'block' : 'none';
+      }
+
+      function updateMask() {
+        if (!logoImg || !maskSelect) return;
+        logoImg.className = 'logo-img';
+        logoImg.classList.add(maskSelect.value);
+      }
+
+      toggleCross?.addEventListener('change', updateGuides);
+      toggleCircle?.addEventListener('change', updateGuides);
+      maskSelect?.addEventListener('change', updateMask);
+
+      exportImprintBtn?.addEventListener('click', () => {
+        if (!resolutionSelect || !maskSelect) return;
+        const size = parseInt(resolutionSelect.value, 10);
+        const maskMode = maskSelect.value;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = '/assets/images/logo.svg';
+
+        img.onload = () => {
+          ctx.save();
+          if (maskMode === 'silhouette-black') {
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+          } else if (maskMode === 'silhouette-white') {
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, size, size);
+          } else if (maskMode === 'brand-gradient') {
+            ctx.drawImage(img, 0, 0, size, size);
+            ctx.globalCompositeOperation = 'source-in';
+            const grad = ctx.createLinearGradient(0, 0, size, size);
+            grad.addColorStop(0, '#FF6F61');
+            grad.addColorStop(1, '#5B7EBD');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, size, size);
+          } else {
+            ctx.drawImage(img, 0, 0, size, size);
+          }
+          ctx.restore();
+
+          const link = document.createElement('a');
+          link.download = `logo-imprint-${maskMode}-${size}x${size}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          notify(`Exported ${size}×${size} insignia PNG!`);
+        };
+      });
+
+      updateGuides();
+      updateMask();
+
+      // Helper function: Copy to clipboard with fallback
+      function copyToClipboard(text, onSuccess) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text)
+            .then(() => { if (onSuccess) onSuccess(); })
+            .catch(() => { fallbackCopy(text, onSuccess); });
+        } else {
+          fallbackCopy(text, onSuccess);
+        }
+      }
+
+      function fallbackCopy(text, onSuccess) {
+        try {
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          temp.style.position = 'fixed';
+          temp.style.top = '-9999px';
+          temp.style.left = '-9999px';
+          document.body.appendChild(temp);
+          temp.focus();
+          temp.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(temp);
+          if (ok && onSuccess) onSuccess();
+        } catch (e) {
+          console.warn('Clipboard copy failed:', e);
+        }
+      }
+
+      // ==========================================
+      // 4. COLOR HEX BUTTONS
+      // ==========================================
+      document.querySelectorAll('.copy-hex-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const hex = btn.getAttribute('data-hex');
+          if (hex) {
+            copyToClipboard(hex, () => {
+              notify(`Copied ${hex} to clipboard!`);
+              const origHtml = btn.innerHTML;
+              btn.innerHTML = '<i class="fa-solid fa-check text-success"></i>';
+              btn.classList.add('border-success');
+              btn.blur();
+              setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.classList.remove('border-success');
+              }, 1800);
+            });
+          }
+        });
+      });
+
+      // ==========================================
+      // 5. DISCORD BOT WELCOME TEMPLATE
+      // ==========================================
+      const memberInput = document.getElementById('welcome-member');
+      const serverInput = document.getElementById('welcome-server');
+      const usernameInput = document.getElementById('welcome-botname');
+      const outputTextarea = document.getElementById('welcome-output');
+      const copyInterpolatedBtn = document.getElementById('btn-copy-interpolated');
+      const copyTemplateBtn = document.getElementById('btn-copy-template');
+
+      let templateText = initialTemplate;
+
+      function stripFrontmatter(text) {
+        if (!text) return '';
+        if (text.startsWith('---')) {
+          const parts = text.split('---');
+          if (parts.length >= 3) {
+            return parts.slice(2).join('---').trim();
+          }
+        }
+        return text.trim();
+      }
+
+      templateText = stripFrontmatter(templateText);
+
+      function renderTemplate() {
+        if (!outputTextarea) return;
+        const member = memberInput?.value || '';
+        const serverName = serverInput?.value || '';
+        const username = usernameInput?.value || '';
+        
+        let rendered = templateText
+          .replace(/{member}/g, member)
+          .replace(/{server_name}/g, serverName)
+          .replace(/{username}/g, username);
+
+        outputTextarea.value = rendered;
+      }
+
+      memberInput?.addEventListener('input', renderTemplate);
+      serverInput?.addEventListener('input', renderTemplate);
+      usernameInput?.addEventListener('input', renderTemplate);
+
+      copyInterpolatedBtn?.addEventListener('click', () => {
+        if (!outputTextarea) return;
+        copyToClipboard(outputTextarea.value, () => {
+          notify('Copied welcome message to clipboard!');
+          const orig = '<i class="fa-solid fa-copy me-1"></i> Copy Message';
+          const copied = '<i class="fa-solid fa-check me-1"></i> Copied!';
+          copyInterpolatedBtn.innerHTML = copied;
+          copyInterpolatedBtn.classList.replace('btn-primary', 'btn-success');
+          copyInterpolatedBtn.blur();
+          setTimeout(() => {
+            copyInterpolatedBtn.innerHTML = orig;
+            copyInterpolatedBtn.classList.replace('btn-success', 'btn-primary');
+          }, 1800);
+        });
+      });
+
+      copyTemplateBtn?.addEventListener('click', () => {
+        copyToClipboard(templateText, () => {
+          notify('Copied raw template to clipboard!');
+          const orig = '<i class="fa-solid fa-code me-1"></i> Copy Template';
+          const copied = '<i class="fa-solid fa-check me-1"></i> Copied!';
+          copyTemplateBtn.innerHTML = copied;
+          copyTemplateBtn.classList.replace('btn-outline-secondary', 'btn-success');
+          copyTemplateBtn.blur();
+          setTimeout(() => {
+            copyTemplateBtn.innerHTML = orig;
+            copyTemplateBtn.classList.replace('btn-success', 'btn-outline-secondary');
+          }, 1800);
+        });
+      });
+
+      fetch('/tools/bot_welcome_message.txt')
+        .then((res) => {
+          if (!res.ok) throw new Error('Network error');
+          return res.text();
+        })
+        .then((text) => {
+          templateText = stripFrontmatter(text);
+          renderTemplate();
+        })
+        .catch((err) => {
+          console.warn('Could not fetch runtime welcome template, falling back to build-time version.', err);
+        });
+
+      renderTemplate();
+    });
+  </script>
+</Layout>
