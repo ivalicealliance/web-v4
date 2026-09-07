@@ -5,5 +5,10 @@ export default defineConfig({
   output: 'static',
   build: {
     format: 'file'
+  },
+  redirects: {
+    '/tools': '/fankit.html',
+    '/tools/icongen': '/fankit.html',
+    '/tools/imprint': '/fankit.html'
   }
 });
